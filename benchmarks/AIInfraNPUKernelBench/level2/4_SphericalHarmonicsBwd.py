@@ -4,10 +4,19 @@ Per OPERATOR_TORCH_NPU_MAPPING.md classification: meta_gauss_render not installe
 in this environment, so golden mirrors prompt_reference.py exactly. If/when
 meta_gauss_render._C is packaged, swap forward() to call the real kernel.
 """
+import json as _json
+import os as _os
+from pathlib import Path as _Path
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from typing import List
+
+_DTYPE_ALIAS = {
+    "bf16": "bfloat16", "fp16": "float16", "fp32": "float32",
+    "fp64": "float64",
+}
 
 
 class Model(nn.Module):
@@ -266,16 +275,8 @@ class Model(nn.Module):
         return [v_dirs, v_coeffs]
 
 
-def _load_jsonl_cases(jsonl_path):
-    """Load INPUT_CASES from a JSONL file at runtime, converting dtype abbreviations."""
-    import json as _json
-    from pathlib import Path as _Path
-
-    _DTYPE_ALIAS = {
-        "bf16": "bfloat16", "fp16": "float16", "fp32": "float32",
-        "fp64": "float64",
-    }
-    p = _Path(jsonl_path)
+def _load_jsonl_cases(path):
+    p = _Path(path)
     if not p.exists():
         return []
     cases = []
@@ -291,202 +292,8 @@ def _load_jsonl_cases(jsonl_path):
     return cases
 
 
-import os as _os
 _JSONL_PATH = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "4_SphericalHarmonicsBwd.json")
-INPUT_CASES_FULL = _load_jsonl_cases(_JSONL_PATH)
-# 默认 smoke：硬编码前 N 条用例，避免 1000 条全量跑炸；
-# 设置环境变量 AIINFRABENCH_FULL_CASES=1 切回 .json 全量。
-INPUT_CASES_SMOKE = [{'inputs': [{'name': 'dirs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 24057],
-              'range': [1.0, 2.0]},
-             {'name': 'coeffs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 1, 3, 24057],
-              'range': [1.0, 2.0]},
-             {'name': 'v_colors',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 24057],
-              'range': [1.0, 2.0]},
-             {'name': 'degree', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'dirs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 61459],
-              'range': [1.0, 2.0]},
-             {'name': 'coeffs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 1, 3, 61459],
-              'range': [1.0, 2.0]},
-             {'name': 'v_colors',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 61459],
-              'range': [1.0, 2.0]},
-             {'name': 'degree', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'dirs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 30423],
-              'range': [1.0, 2.0]},
-             {'name': 'coeffs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 1, 3, 30423],
-              'range': [1.0, 2.0]},
-             {'name': 'v_colors',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 30423],
-              'range': [1.0, 2.0]},
-             {'name': 'degree', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'dirs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 38349],
-              'range': [1.0, 2.0]},
-             {'name': 'coeffs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 1, 3, 38349],
-              'range': [1.0, 2.0]},
-             {'name': 'v_colors',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 38349],
-              'range': [1.0, 2.0]},
-             {'name': 'degree', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'dirs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 64502],
-              'range': [1.0, 2.0]},
-             {'name': 'coeffs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 1, 3, 64502],
-              'range': [1.0, 2.0]},
-             {'name': 'v_colors',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 64502],
-              'range': [1.0, 2.0]},
-             {'name': 'degree', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'dirs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 35392],
-              'range': [1.0, 2.0]},
-             {'name': 'coeffs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 1, 3, 35392],
-              'range': [1.0, 2.0]},
-             {'name': 'v_colors',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 35392],
-              'range': [1.0, 2.0]},
-             {'name': 'degree', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'dirs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 18556],
-              'range': [1.0, 2.0]},
-             {'name': 'coeffs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 1, 3, 18556],
-              'range': [1.0, 2.0]},
-             {'name': 'v_colors',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 18556],
-              'range': [1.0, 2.0]},
-             {'name': 'degree', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'dirs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 78962],
-              'range': [1.0, 2.0]},
-             {'name': 'coeffs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 1, 3, 78962],
-              'range': [1.0, 2.0]},
-             {'name': 'v_colors',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 78962],
-              'range': [1.0, 2.0]},
-             {'name': 'degree', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'dirs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 72506],
-              'range': [1.0, 2.0]},
-             {'name': 'coeffs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 1, 3, 72506],
-              'range': [1.0, 2.0]},
-             {'name': 'v_colors',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 72506],
-              'range': [1.0, 2.0]},
-             {'name': 'degree', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'dirs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 67025],
-              'range': [1.0, 2.0]},
-             {'name': 'coeffs',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 1, 3, 67025],
-              'range': [1.0, 2.0]},
-             {'name': 'v_colors',
-              'type': 'tensor',
-              'required': True,
-              'dtype': 'float32',
-              'shape': [1, 3, 67025],
-              'range': [1.0, 2.0]},
-             {'name': 'degree', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]}]
-INPUT_CASES = INPUT_CASES_FULL if _os.environ.get("AIINFRABENCH_FULL_CASES") == "1" else INPUT_CASES_SMOKE
+INPUT_CASES = _load_jsonl_cases(_JSONL_PATH)
 _DTYPE_MAP = {
     "float16": torch.float16,
     "float32": torch.float32,
@@ -557,8 +364,7 @@ def _make_arg(spec):
 
 
 def get_input_groups():
-    for case in INPUT_CASES:
-        yield [_make_arg(spec) for spec in case["inputs"]]
+    return [[_make_arg(spec) for spec in case["inputs"]] for case in INPUT_CASES]
 
 
 def get_init_inputs():

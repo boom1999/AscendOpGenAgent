@@ -90,50 +90,7 @@ def _load_jsonl_cases(path):
 
 
 _JSONL_PATH = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "9_RotaryPositionEmbedding.json")
-INPUT_CASES_FULL = _load_jsonl_cases(_JSONL_PATH)
-# 默认 smoke：硬编码前 N 条用例，避免 1000 条全量跑炸；
-# 设置环境变量 AIINFRABENCH_FULL_CASES=1 切回 .json 全量。
-INPUT_CASES_SMOKE = [{'inputs': [{'name': 'x', 'type': 'tensor', 'required': True, 'dtype': 'float32', 'shape': [2, 4, 8, 128]},
-             {'name': 'cos', 'type': 'tensor', 'required': True, 'dtype': 'float32', 'shape': [1, 1, 8, 128]},
-             {'name': 'sin', 'type': 'tensor', 'required': True, 'dtype': 'float32', 'shape': [1, 1, 8, 128]},
-             {'name': 'mode', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'x', 'type': 'tensor', 'required': True, 'dtype': 'float16', 'shape': [2, 4, 8, 128]},
-             {'name': 'cos', 'type': 'tensor', 'required': True, 'dtype': 'float16', 'shape': [1, 1, 8, 128]},
-             {'name': 'sin', 'type': 'tensor', 'required': True, 'dtype': 'float16', 'shape': [1, 1, 8, 128]},
-             {'name': 'mode', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'x', 'type': 'tensor', 'required': True, 'dtype': 'bfloat16', 'shape': [2, 8, 16, 128]},
-             {'name': 'cos', 'type': 'tensor', 'required': True, 'dtype': 'bfloat16', 'shape': [1, 1, 16, 128]},
-             {'name': 'sin', 'type': 'tensor', 'required': True, 'dtype': 'bfloat16', 'shape': [1, 1, 16, 128]},
-             {'name': 'mode', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'x', 'type': 'tensor', 'required': True, 'dtype': 'float32', 'shape': [4, 8, 16, 64]},
-             {'name': 'cos', 'type': 'tensor', 'required': True, 'dtype': 'float32', 'shape': [1, 1, 16, 64]},
-             {'name': 'sin', 'type': 'tensor', 'required': True, 'dtype': 'float32', 'shape': [1, 1, 16, 64]},
-             {'name': 'mode', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'x', 'type': 'tensor', 'required': True, 'dtype': 'bfloat16', 'shape': [4, 8, 16, 128]},
-             {'name': 'cos', 'type': 'tensor', 'required': True, 'dtype': 'bfloat16', 'shape': [1, 1, 16, 128]},
-             {'name': 'sin', 'type': 'tensor', 'required': True, 'dtype': 'bfloat16', 'shape': [1, 1, 16, 128]},
-             {'name': 'mode', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'x', 'type': 'tensor', 'required': True, 'dtype': 'float16', 'shape': [2, 32, 128, 128]},
-             {'name': 'cos', 'type': 'tensor', 'required': True, 'dtype': 'float16', 'shape': [1, 1, 128, 128]},
-             {'name': 'sin', 'type': 'tensor', 'required': True, 'dtype': 'float16', 'shape': [1, 1, 128, 128]},
-             {'name': 'mode', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'x', 'type': 'tensor', 'required': True, 'dtype': 'bfloat16', 'shape': [1, 16, 64, 128]},
-             {'name': 'cos', 'type': 'tensor', 'required': True, 'dtype': 'bfloat16', 'shape': [1, 1, 64, 128]},
-             {'name': 'sin', 'type': 'tensor', 'required': True, 'dtype': 'bfloat16', 'shape': [1, 1, 64, 128]},
-             {'name': 'mode', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 0}]},
- {'inputs': [{'name': 'x', 'type': 'tensor', 'required': True, 'dtype': 'float32', 'shape': [2, 4, 8, 128]},
-             {'name': 'cos', 'type': 'tensor', 'required': True, 'dtype': 'float32', 'shape': [1, 1, 8, 128]},
-             {'name': 'sin', 'type': 'tensor', 'required': True, 'dtype': 'float32', 'shape': [1, 1, 8, 128]},
-             {'name': 'mode', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 1}]},
- {'inputs': [{'name': 'x', 'type': 'tensor', 'required': True, 'dtype': 'float16', 'shape': [2, 4, 8, 128]},
-             {'name': 'cos', 'type': 'tensor', 'required': True, 'dtype': 'float16', 'shape': [1, 1, 8, 128]},
-             {'name': 'sin', 'type': 'tensor', 'required': True, 'dtype': 'float16', 'shape': [1, 1, 8, 128]},
-             {'name': 'mode', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 1}]},
- {'inputs': [{'name': 'x', 'type': 'tensor', 'required': True, 'dtype': 'bfloat16', 'shape': [2, 8, 16, 128]},
-             {'name': 'cos', 'type': 'tensor', 'required': True, 'dtype': 'bfloat16', 'shape': [1, 1, 16, 128]},
-             {'name': 'sin', 'type': 'tensor', 'required': True, 'dtype': 'bfloat16', 'shape': [1, 1, 16, 128]},
-             {'name': 'mode', 'type': 'attr', 'required': False, 'dtype': 'int', 'value': 1}]}]
-INPUT_CASES = INPUT_CASES_FULL if _os.environ.get("AIINFRABENCH_FULL_CASES") == "1" else INPUT_CASES_SMOKE
+INPUT_CASES = _load_jsonl_cases(_JSONL_PATH)
 def _make_tensor(spec):
     dtype = _DTYPE_MAP[spec["dtype"]]
     shape = spec["shape"]
@@ -160,8 +117,7 @@ def _make_arg(spec):
 
 
 def get_input_groups():
-    for case in INPUT_CASES:
-        yield [_make_arg(spec) for spec in case["inputs"]]
+    return [[_make_arg(spec) for spec in case["inputs"]] for case in INPUT_CASES]
 
 
 def get_init_inputs():
