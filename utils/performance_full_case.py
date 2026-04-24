@@ -621,14 +621,19 @@ def _write_csv_and_summary(report, task_dir: Path, worker_reports=None):
 
     # Write per-group CSVs if worker_reports provided
     if worker_reports:
+        # Group all worker reports by npu_id so each CSV contains all impls
+        grouped = {}
         for npu_id, worker_report in worker_reports:
+            grouped.setdefault(npu_id, []).append(worker_report)
+        for npu_id in sorted(grouped.keys()):
             group_csv = groups_dir / f"npu{npu_id}.csv"
             with open(group_csv, "w", newline="") as f:
                 writer = csv.writer(f)
                 writer.writerow(["case_index", "impl", "mean_ms", "median_ms", "min_ms", "max_ms", "stdev_ms"])
-                for r in worker_report.get("results", []):
-                    for cr in r.get("case_results", []):
-                        writer.writerow([cr["index"], r["impl"], cr["mean_ms"], cr["median_ms"], cr["min_ms"], cr["max_ms"], cr["stdev_ms"]])
+                for worker_report in grouped[npu_id]:
+                    for r in worker_report.get("results", []):
+                        for cr in r.get("case_results", []):
+                            writer.writerow([cr["index"], r["impl"], cr["mean_ms"], cr["median_ms"], cr["min_ms"], cr["max_ms"], cr["stdev_ms"]])
 
     return perf_dir
 
@@ -718,6 +723,35 @@ def _parse_args(argv):
     return op, impls, warmup, repeat, seed, json_out
 
 
+def _run_impl_isolated(op, impl, warmup, repeat, seed, npu_ids, json_out_path):
+    """Run a single impl in an isolated subprocess, return parsed JSON report or None."""
+    cmd = [sys.executable, str(Path(__file__).resolve()), op, impl,
+           str(warmup), str(repeat), str(seed), "--json-out", json_out_path]
+    env = os.environ.copy()
+    proc = subprocess.run(cmd, env=env)
+    if Path(json_out_path).is_file():
+        with open(json_out_path) as f:
+            return _json_mod.load(f)
+    return None
+
+
+def _merge_reports(reports):
+    """Merge per-impl reports into a single combined report."""
+    base = None
+    for r in reports:
+        if r is None:
+            continue
+        if base is None:
+            base = r
+            continue
+        base["results"].extend(r.get("results", []))
+        base["errors"].extend(r.get("errors", []))
+        wr = r.pop("_worker_reports", None)
+        if wr:
+            base.setdefault("_worker_reports", []).extend(wr)
+    return base
+
+
 def main():
     op, impls, warmup, repeat, seed, json_out = _parse_args(sys.argv)
 
@@ -730,10 +764,33 @@ def main():
     else:
         npu_ids = []
 
-    if len(npu_ids) > 1 and not json_out:
-        report = _run_parallel(op, impls, warmup, repeat, seed, npu_ids)
+    if len(impls) > 1:
+        # Run each impl in an isolated subprocess so that a crash
+        # (e.g. tilelang aicore exception) cannot taint later impls.
+        tmp_dir = tempfile.mkdtemp(prefix="perf_iso_")
+        sub_reports = []
+        for impl in impls:
+            tmp_json = os.path.join(tmp_dir, f"{impl}.json")
+            sub_report = _run_impl_isolated(op, impl, warmup, repeat, seed, npu_ids, tmp_json)
+            sub_reports.append(sub_report)
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+        report = _merge_reports(sub_reports)
+        if report is None:
+            print("All implementations failed.")
+            raise SystemExit(1)
     else:
-        report = _run_performance(op, impls, warmup, repeat, seed)
+        if len(npu_ids) > 1:
+            report = _run_parallel(op, impls, warmup, repeat, seed, npu_ids)
+        else:
+            report = _run_performance(op, impls, warmup, repeat, seed)
+
+    # If invoked as a subprocess for isolated impl, only write JSON and exit
+    if json_out and len(impls) == 1:
+        with open(json_out, "w") as f:
+            _json_mod.dump(report, f, indent=2)
+        if not any(result["ok"] for result in report["results"]):
+            raise SystemExit(1)
+        return
 
     # Write CSV and summary
     task_dir = Path(report["task_dir"])
