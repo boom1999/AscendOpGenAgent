@@ -1,0 +1,543 @@
+----------------------------------------------------------------------------------------
+Impl         Status       Mean(ms)       Median          Min          Max          Std
+----------------------------------------------------------------------------------------
+reference    OK             29.919        6.812        0.402      423.051       66.702
+----------------------------------------------------------------------------------------
+reference -> /home/Code/AscendOpGenAgent/output/20260424_155444/8_ScatterBlockUpdate/model.py
+case[0] mean=0.585 ms, median=0.579 ms, samples(ms): [0.667, 0.578, 0.601, 0.580, 0.569, 0.568, 0.586, 0.564, 0.556, 0.581]
+case[1] mean=0.693 ms, median=0.741 ms, samples(ms): [0.708, 0.782, 0.786, 0.546, 0.782, 0.625, 0.775, 0.508, 0.776, 0.644]
+case[2] mean=0.666 ms, median=0.596 ms, samples(ms): [0.913, 0.595, 0.545, 0.530, 0.898, 0.622, 0.528, 0.529, 0.905, 0.597]
+case[3] mean=42.363 ms, median=41.890 ms, samples(ms): [41.853, 41.838, 41.858, 44.178, 41.893, 41.887, 41.844, 44.075, 41.896, 42.304]
+case[4] mean=1.177 ms, median=1.009 ms, samples(ms): [1.590, 2.191, 1.585, 1.019, 0.805, 1.030, 0.813, 0.999, 0.807, 0.927]
+case[5] mean=42.064 ms, median=42.056 ms, samples(ms): [42.173, 42.272, 41.958, 41.933, 41.943, 42.002, 42.038, 42.073, 42.173, 42.076]
+case[6] mean=21.152 ms, median=21.153 ms, samples(ms): [21.166, 21.140, 21.171, 21.118, 21.105, 21.159, 21.218, 21.152, 21.153, 21.137]
+case[7] mean=21.389 ms, median=21.393 ms, samples(ms): [21.351, 21.481, 21.422, 21.339, 21.413, 21.353, 21.394, 21.424, 21.317, 21.393]
+case[8] mean=22.460 ms, median=21.205 ms, samples(ms): [21.200, 21.187, 21.211, 21.143, 21.223, 21.072, 21.158, 28.119, 26.944, 21.343]
+case[9] mean=42.110 ms, median=42.004 ms, samples(ms): [42.127, 42.995, 42.063, 41.827, 41.892, 41.957, 42.369, 41.858, 41.984, 42.025]
+case[10] mean=84.779 ms, median=84.681 ms, samples(ms): [84.912, 84.662, 85.033, 84.464, 84.517, 84.973, 84.663, 85.209, 84.700, 84.659]
+case[11] mean=420.470 ms, median=421.225 ms, samples(ms): [419.269, 419.005, 419.883, 421.361, 421.281, 421.372, 421.170, 423.051, 421.310, 416.996]
+case[12] mean=42.173 ms, median=42.152 ms, samples(ms): [42.082, 42.227, 42.094, 42.150, 42.182, 42.178, 42.468, 42.075, 42.122, 42.154]
+case[13] mean=83.177 ms, median=83.148 ms, samples(ms): [82.831, 83.218, 82.878, 83.073, 83.603, 83.257, 83.300, 82.728, 83.077, 83.808]
+case[14] mean=1.298 ms, median=1.293 ms, samples(ms): [1.340, 1.333, 1.301, 1.278, 1.280, 1.277, 1.301, 1.278, 1.303, 1.285]
+case[15] mean=169.595 ms, median=169.331 ms, samples(ms): [166.219, 165.889, 165.911, 165.767, 177.412, 171.934, 169.385, 171.219, 169.277, 172.937]
+case[16] mean=105.168 ms, median=105.520 ms, samples(ms): [105.539, 108.441, 105.406, 107.106, 106.649, 101.308, 103.076, 102.817, 105.838, 105.502]
+case[17] mean=0.937 ms, median=0.948 ms, samples(ms): [0.964, 0.831, 0.961, 0.932, 0.950, 0.968, 0.946, 0.938, 0.969, 0.914]
+case[18] mean=21.369 ms, median=21.375 ms, samples(ms): [21.396, 21.429, 21.232, 21.386, 21.491, 21.324, 21.512, 21.363, 21.293, 21.267]
+case[19] mean=0.464 ms, median=0.456 ms, samples(ms): [0.466, 0.533, 0.429, 0.429, 0.457, 0.455, 0.429, 0.414, 0.558, 0.471]
+case[20] mean=0.572 ms, median=0.562 ms, samples(ms): [0.616, 0.528, 0.585, 0.556, 0.631, 0.551, 0.563, 0.625, 0.509, 0.561]
+case[21] mean=105.539 ms, median=105.521 ms, samples(ms): [105.935, 106.715, 106.450, 105.100, 104.311, 104.851, 105.504, 105.538, 105.326, 105.656]
+case[22] mean=0.855 ms, median=0.846 ms, samples(ms): [0.843, 0.849, 0.863, 0.812, 0.825, 0.810, 0.799, 1.003, 0.878, 0.866]
+case[23] mean=11.089 ms, median=11.051 ms, samples(ms): [11.000, 11.055, 11.126, 11.262, 11.394, 11.109, 10.906, 10.978, 11.013, 11.047]
+case[24] mean=10.716 ms, median=10.715 ms, samples(ms): [10.717, 10.660, 10.714, 10.754, 10.832, 10.773, 10.635, 10.647, 10.673, 10.756]
+case[25] mean=20.664 ms, median=20.617 ms, samples(ms): [20.756, 20.544, 20.574, 20.760, 20.967, 20.563, 20.764, 20.515, 20.538, 20.661]
+case[26] mean=2.319 ms, median=2.322 ms, samples(ms): [2.330, 2.335, 2.300, 2.358, 2.331, 2.343, 2.296, 2.304, 2.314, 2.275]
+case[27] mean=10.899 ms, median=10.857 ms, samples(ms): [10.955, 10.940, 10.804, 10.902, 10.922, 10.812, 10.811, 10.800, 10.771, 11.277]
+case[28] mean=0.526 ms, median=0.469 ms, samples(ms): [0.475, 0.468, 0.461, 0.444, 0.468, 0.469, 0.470, 0.770, 0.715, 0.516]
+case[29] mean=0.431 ms, median=0.427 ms, samples(ms): [0.444, 0.437, 0.426, 0.426, 0.425, 0.422, 0.423, 0.428, 0.441, 0.440]
+case[30] mean=0.643 ms, median=0.644 ms, samples(ms): [0.655, 0.648, 0.645, 0.648, 0.643, 0.617, 0.636, 0.639, 0.644, 0.660]
+case[31] mean=1.008 ms, median=0.840 ms, samples(ms): [0.947, 0.808, 0.840, 2.336, 0.824, 0.831, 0.912, 0.839, 0.833, 0.913]
+case[32] mean=0.546 ms, median=0.537 ms, samples(ms): [0.618, 0.560, 0.570, 0.535, 0.536, 0.537, 0.518, 0.521, 0.542, 0.520]
+case[33] mean=0.605 ms, median=0.601 ms, samples(ms): [0.600, 0.601, 0.638, 0.602, 0.596, 0.597, 0.602, 0.594, 0.611, 0.613]
+case[34] mean=42.885 ms, median=42.721 ms, samples(ms): [42.785, 42.758, 42.800, 42.684, 42.835, 42.277, 42.447, 42.328, 45.276, 42.661]
+case[35] mean=0.563 ms, median=0.441 ms, samples(ms): [0.441, 0.441, 0.436, 0.441, 0.463, 1.116, 0.836, 0.631, 0.402, 0.419]
+case[36] mean=0.566 ms, median=0.575 ms, samples(ms): [0.526, 0.613, 0.637, 0.581, 0.569, 0.479, 0.478, 0.605, 0.612, 0.565]
+case[37] mean=0.762 ms, median=0.768 ms, samples(ms): [0.766, 0.768, 0.772, 0.767, 0.713, 0.774, 0.764, 0.790, 0.779, 0.725]
+case[38] mean=0.838 ms, median=0.831 ms, samples(ms): [0.890, 0.841, 0.826, 0.830, 0.851, 0.839, 0.820, 0.822, 0.832, 0.828]
+case[39] mean=0.594 ms, median=0.592 ms, samples(ms): [0.571, 0.604, 0.580, 0.611, 0.579, 0.611, 0.577, 0.618, 0.569, 0.620]
+case[40] mean=0.924 ms, median=0.898 ms, samples(ms): [1.366, 0.715, 0.893, 0.902, 0.911, 0.855, 0.927, 0.883, 0.884, 0.903]
+case[41] mean=42.379 ms, median=42.238 ms, samples(ms): [42.189, 42.055, 42.126, 42.333, 42.566, 43.946, 42.406, 42.168, 41.717, 42.287]
+case[42] mean=0.931 ms, median=0.872 ms, samples(ms): [0.821, 0.831, 0.902, 0.929, 1.191, 1.231, 0.860, 0.836, 0.822, 0.883]
+case[43] mean=10.963 ms, median=10.903 ms, samples(ms): [10.881, 10.910, 11.135, 11.271, 11.048, 10.952, 10.831, 10.847, 10.858, 10.896]
+case[44] mean=10.619 ms, median=10.613 ms, samples(ms): [10.613, 10.558, 10.632, 10.613, 10.575, 10.722, 10.684, 10.591, 10.660, 10.545]
+case[45] mean=20.486 ms, median=20.460 ms, samples(ms): [20.606, 20.515, 20.267, 20.164, 20.405, 21.299, 20.548, 21.069, 20.077, 19.904]
+case[46] mean=2.460 ms, median=2.343 ms, samples(ms): [3.095, 2.736, 2.412, 2.325, 2.325, 2.299, 2.330, 2.349, 2.338, 2.386]
+case[47] mean=10.638 ms, median=10.637 ms, samples(ms): [10.687, 10.647, 10.750, 10.653, 10.530, 10.657, 10.627, 10.598, 10.625, 10.611]
+========================================================================================
+Performance Report
+========================================================================================
+Operator  : /home/Code/AscendOpGenAgent/output/20260424_155444/8_ScatterBlockUpdate
+Task Dir  : /home/Code/AscendOpGenAgent/output/20260424_155444/8_ScatterBlockUpdate
+Device    : npu
+Warmup    : 5
+Repeat    : 10
+Seed      : 0
+----------------------------------------------------------------------------------------
+Inputs
+----------------------------------------------------------------------------------------
+inputs[0]: list[3]
+inputs[0][0]: Tensor(shape=(2048, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[0][1]: Tensor(shape=(2048, 2), dtype=torch.int32, device=npu:0)
+inputs[0][2]: Tensor(shape=(2048, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[1]: list[3]
+inputs[1][0]: Tensor(shape=(4096, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[1][1]: Tensor(shape=(65536, 2), dtype=torch.int32, device=npu:0)
+inputs[1][2]: Tensor(shape=(65536, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[2]: list[3]
+inputs[2][0]: Tensor(shape=(10240, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[2][1]: Tensor(shape=(240, 2), dtype=torch.int32, device=npu:0)
+inputs[2][2]: Tensor(shape=(240, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[3]: list[3]
+inputs[3][0]: Tensor(shape=(8192, 128, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[3][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[3][2]: Tensor(shape=(262144, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[4]: list[3]
+inputs[4][0]: Tensor(shape=(10240, 128, 1), dtype=torch.float32, device=npu:0)
+inputs[4][1]: Tensor(shape=(1, 2), dtype=torch.int32, device=npu:0)
+inputs[4][2]: Tensor(shape=(1, 1), dtype=torch.float32, device=npu:0)
+inputs[5]: list[3]
+inputs[5][0]: Tensor(shape=(8192, 128, 256), dtype=torch.int8, device=npu:0)
+inputs[5][1]: Tensor(shape=(240, 2), dtype=torch.int32, device=npu:0)
+inputs[5][2]: Tensor(shape=(240, 256), dtype=torch.int8, device=npu:0)
+inputs[6]: list[3]
+inputs[6][0]: Tensor(shape=(2048, 128, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[6][1]: Tensor(shape=(1, 2), dtype=torch.int32, device=npu:0)
+inputs[6][2]: Tensor(shape=(1, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[7]: list[3]
+inputs[7][0]: Tensor(shape=(2048, 128, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[7][1]: Tensor(shape=(2048, 2), dtype=torch.int32, device=npu:0)
+inputs[7][2]: Tensor(shape=(2048, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[8]: list[3]
+inputs[8][0]: Tensor(shape=(2048, 256, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[8][1]: Tensor(shape=(240, 2), dtype=torch.int32, device=npu:0)
+inputs[8][2]: Tensor(shape=(240, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[9]: list[3]
+inputs[9][0]: Tensor(shape=(4096, 256, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[9][1]: Tensor(shape=(1, 2), dtype=torch.int32, device=npu:0)
+inputs[9][2]: Tensor(shape=(1, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[10]: list[3]
+inputs[10][0]: Tensor(shape=(4096, 256, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[10][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[10][2]: Tensor(shape=(262144, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[11]: list[3]
+inputs[11][0]: Tensor(shape=(10240, 512, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[11][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[11][2]: Tensor(shape=(16384, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[12]: list[3]
+inputs[12][0]: Tensor(shape=(2048, 256, 128), dtype=torch.float32, device=npu:0)
+inputs[12][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[12][2]: Tensor(shape=(16384, 128), dtype=torch.float32, device=npu:0)
+inputs[13]: list[3]
+inputs[13][0]: Tensor(shape=(2048, 256, 256), dtype=torch.float32, device=npu:0)
+inputs[13][1]: Tensor(shape=(65536, 2), dtype=torch.int32, device=npu:0)
+inputs[13][2]: Tensor(shape=(65536, 256), dtype=torch.float32, device=npu:0)
+inputs[14]: list[3]
+inputs[14][0]: Tensor(shape=(4096, 512, 1), dtype=torch.float32, device=npu:0)
+inputs[14][1]: Tensor(shape=(240, 2), dtype=torch.int32, device=npu:0)
+inputs[14][2]: Tensor(shape=(240, 1), dtype=torch.float32, device=npu:0)
+inputs[15]: list[3]
+inputs[15][0]: Tensor(shape=(4096, 512, 128), dtype=torch.float32, device=npu:0)
+inputs[15][1]: Tensor(shape=(2048, 2), dtype=torch.int32, device=npu:0)
+inputs[15][2]: Tensor(shape=(2048, 128), dtype=torch.float32, device=npu:0)
+inputs[16]: list[3]
+inputs[16][0]: Tensor(shape=(10240, 128, 128), dtype=torch.float32, device=npu:0)
+inputs[16][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[16][2]: Tensor(shape=(262144, 128), dtype=torch.float32, device=npu:0)
+inputs[17]: list[3]
+inputs[17][0]: Tensor(shape=(2048, 512, 1), dtype=torch.int8, device=npu:0)
+inputs[17][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[17][2]: Tensor(shape=(262144, 1), dtype=torch.int8, device=npu:0)
+inputs[18]: list[3]
+inputs[18][0]: Tensor(shape=(2048, 512, 128), dtype=torch.int8, device=npu:0)
+inputs[18][1]: Tensor(shape=(1, 2), dtype=torch.int32, device=npu:0)
+inputs[18][2]: Tensor(shape=(1, 128), dtype=torch.int8, device=npu:0)
+inputs[19]: list[3]
+inputs[19][0]: Tensor(shape=(4096, 128, 1), dtype=torch.int8, device=npu:0)
+inputs[19][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[19][2]: Tensor(shape=(16384, 1), dtype=torch.int8, device=npu:0)
+inputs[20]: list[3]
+inputs[20][0]: Tensor(shape=(10240, 256, 1), dtype=torch.int8, device=npu:0)
+inputs[20][1]: Tensor(shape=(2048, 2), dtype=torch.int32, device=npu:0)
+inputs[20][2]: Tensor(shape=(2048, 1), dtype=torch.int8, device=npu:0)
+inputs[21]: list[3]
+inputs[21][0]: Tensor(shape=(10240, 512, 128), dtype=torch.int8, device=npu:0)
+inputs[21][1]: Tensor(shape=(65536, 2), dtype=torch.int32, device=npu:0)
+inputs[21][2]: Tensor(shape=(65536, 128), dtype=torch.int8, device=npu:0)
+inputs[22]: list[3]
+inputs[22][0]: Tensor(shape=(2048, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[22][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[22][2]: Tensor(shape=(262144, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[23]: list[3]
+inputs[23][0]: Tensor(shape=(2048, 128, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[23][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[23][2]: Tensor(shape=(262144, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[24]: list[3]
+inputs[24][0]: Tensor(shape=(2048, 128, 127), dtype=torch.bfloat16, device=npu:0)
+inputs[24][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[24][2]: Tensor(shape=(16384, 127), dtype=torch.bfloat16, device=npu:0)
+inputs[25]: list[3]
+inputs[25][0]: Tensor(shape=(2048, 128, 127), dtype=torch.float32, device=npu:0)
+inputs[25][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[25][2]: Tensor(shape=(16384, 127), dtype=torch.float32, device=npu:0)
+inputs[26]: list[3]
+inputs[26][0]: Tensor(shape=(2048, 128, 127), dtype=torch.int8, device=npu:0)
+inputs[26][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[26][2]: Tensor(shape=(16384, 127), dtype=torch.int8, device=npu:0)
+inputs[27]: list[3]
+inputs[27][0]: Tensor(shape=(2048, 128, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[27][1]: Tensor(shape=(16384, 2), dtype=torch.int64, device=npu:0)
+inputs[27][2]: Tensor(shape=(16384, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[28]: list[3]
+inputs[28][0]: Tensor(shape=(2048, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[28][1]: Tensor(shape=(2048, 2), dtype=torch.int32, device=npu:0)
+inputs[28][2]: Tensor(shape=(2048, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[29]: list[3]
+inputs[29][0]: Tensor(shape=(4096, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[29][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[29][2]: Tensor(shape=(16384, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[30]: list[3]
+inputs[30][0]: Tensor(shape=(10240, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[30][1]: Tensor(shape=(1, 2), dtype=torch.int32, device=npu:0)
+inputs[30][2]: Tensor(shape=(1, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[31]: list[3]
+inputs[31][0]: Tensor(shape=(2048, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[31][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[31][2]: Tensor(shape=(262144, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[32]: list[3]
+inputs[32][0]: Tensor(shape=(4096, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[32][1]: Tensor(shape=(65536, 2), dtype=torch.int32, device=npu:0)
+inputs[32][2]: Tensor(shape=(65536, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[33]: list[3]
+inputs[33][0]: Tensor(shape=(10240, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[33][1]: Tensor(shape=(240, 2), dtype=torch.int32, device=npu:0)
+inputs[33][2]: Tensor(shape=(240, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[34]: list[3]
+inputs[34][0]: Tensor(shape=(8192, 128, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[34][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[34][2]: Tensor(shape=(262144, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[35]: list[3]
+inputs[35][0]: Tensor(shape=(2048, 128, 1), dtype=torch.float32, device=npu:0)
+inputs[35][1]: Tensor(shape=(2048, 2), dtype=torch.int32, device=npu:0)
+inputs[35][2]: Tensor(shape=(2048, 1), dtype=torch.float32, device=npu:0)
+inputs[36]: list[3]
+inputs[36][0]: Tensor(shape=(4096, 128, 1), dtype=torch.float32, device=npu:0)
+inputs[36][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[36][2]: Tensor(shape=(16384, 1), dtype=torch.float32, device=npu:0)
+inputs[37]: list[3]
+inputs[37][0]: Tensor(shape=(10240, 128, 1), dtype=torch.float32, device=npu:0)
+inputs[37][1]: Tensor(shape=(1, 2), dtype=torch.int32, device=npu:0)
+inputs[37][2]: Tensor(shape=(1, 1), dtype=torch.float32, device=npu:0)
+inputs[38]: list[3]
+inputs[38][0]: Tensor(shape=(2048, 128, 1), dtype=torch.float32, device=npu:0)
+inputs[38][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[38][2]: Tensor(shape=(262144, 1), dtype=torch.float32, device=npu:0)
+inputs[39]: list[3]
+inputs[39][0]: Tensor(shape=(4096, 128, 1), dtype=torch.float32, device=npu:0)
+inputs[39][1]: Tensor(shape=(65536, 2), dtype=torch.int32, device=npu:0)
+inputs[39][2]: Tensor(shape=(65536, 1), dtype=torch.float32, device=npu:0)
+inputs[40]: list[3]
+inputs[40][0]: Tensor(shape=(10240, 128, 1), dtype=torch.float32, device=npu:0)
+inputs[40][1]: Tensor(shape=(240, 2), dtype=torch.int32, device=npu:0)
+inputs[40][2]: Tensor(shape=(240, 1), dtype=torch.float32, device=npu:0)
+inputs[41]: list[3]
+inputs[41][0]: Tensor(shape=(8192, 128, 256), dtype=torch.int8, device=npu:0)
+inputs[41][1]: Tensor(shape=(240, 2), dtype=torch.int32, device=npu:0)
+inputs[41][2]: Tensor(shape=(240, 256), dtype=torch.int8, device=npu:0)
+inputs[42]: list[3]
+inputs[42][0]: Tensor(shape=(2048, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[42][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[42][2]: Tensor(shape=(262144, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[43]: list[3]
+inputs[43][0]: Tensor(shape=(2048, 128, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[43][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[43][2]: Tensor(shape=(262144, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[44]: list[3]
+inputs[44][0]: Tensor(shape=(2048, 128, 127), dtype=torch.bfloat16, device=npu:0)
+inputs[44][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[44][2]: Tensor(shape=(16384, 127), dtype=torch.bfloat16, device=npu:0)
+inputs[45]: list[3]
+inputs[45][0]: Tensor(shape=(2048, 128, 127), dtype=torch.float32, device=npu:0)
+inputs[45][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[45][2]: Tensor(shape=(16384, 127), dtype=torch.float32, device=npu:0)
+inputs[46]: list[3]
+inputs[46][0]: Tensor(shape=(2048, 128, 127), dtype=torch.int8, device=npu:0)
+inputs[46][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[46][2]: Tensor(shape=(16384, 127), dtype=torch.int8, device=npu:0)
+inputs[47]: list[3]
+inputs[47][0]: Tensor(shape=(2048, 128, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[47][1]: Tensor(shape=(16384, 2), dtype=torch.int64, device=npu:0)
+inputs[47][2]: Tensor(shape=(16384, 128), dtype=torch.bfloat16, device=npu:0)
+----------------------------------------------------------------------------------------
+Impl         Status       Mean(ms)       Median          Min          Max          Std
+----------------------------------------------------------------------------------------
+tilelang     ERROR               -            -            -            -            -
+----------------------------------------------------------------------------------------
+tilelang -> /home/Code/AscendOpGenAgent/output/20260424_155444/8_ScatterBlockUpdate/model_new_tilelang.py
+error      : AttributeError: Traceback (most recent call last):
+  2: _ZN3tvm7runtime13PackedF
+  1: tvm::runtime::TypedPackedFunc<tvm::transform::PassContext (int, tvm::runtime::Array<tvm::runtime::String, void>, tvm::runtime::Array<tvm::runtime::String, void>, tvm::runtime::Array<tvm::instrument::PassInstrument, void>, tvm::runtime::Optional<tvm::runtime::Map<tvm::runtime::String, tvm::runtime::ObjectRef, void, void> >, tvm::runtime::Array<tvm::runtime::ObjectRef, void>, tvm::runtime::Optional<tvm::runtime::Map<tvm::runtime::String, tvm::Bool, void, void> >, int, tvm::runtime::Optional<tvm::runtime::ObjectRef>)>::AssignTypedLambda<tvm::transform::__mk_TVM17::{lambda(int, tvm::runtime::Array<tvm::runtime::String, void>, tvm::runtime::Array<tvm::runtime::String, void>, tvm::runtime::Array<tvm::instrument::PassInstrument, void>, tvm::runtime::Optional<tvm::runtime::Map<tvm::runtime::String, tvm::runtime::ObjectRef, void, void> >, tvm::runtime::Array<tvm::runtime::ObjectRef, void>, tvm::runtime::Optional<tvm::runtime::Map<tvm::runtime::String, tvm::Bool, void, void> >, int, tvm::runtime::Optional<tvm::runtime::ObjectRef>)#1}>(tvm::transform::__mk_TVM17::{lambda(int, tvm::runtime::Array<tvm::runtime::String, void>, tvm::runtime::Array<tvm::runtime::String, void>, tvm::runtime::Array<tvm::instrument::PassInstrument, void>, tvm::runtime::Optional<tvm::runtime::Map<tvm::runtime::String, tvm::runtime::ObjectRef, void, void> >, tvm::runtime::Array<tvm::runtime::ObjectRef, void>, tvm::runtime::Optional<tvm::runtime::Map<tvm::runtime::String, tvm::Bool, void, void> >, int, tvm::runtime::Optional<tvm::runtime::ObjectRef>)#1}, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)::{lambda(tvm::runtime::TVMArgs const&, tvm::runtime::TVMRetValue*)#1}::operator()(tvm::runtime::TVMArgs const, tvm::runtime::TVMRetValue) const
+  0: tvm::transform::PassConfigManager::Legalize(tvm::runtime::Map<tvm::runtime::String, tvm::runtime::ObjectRef, void, void>*)
+  File "/home/Code/tilelang-ascend/3rdparty/tvm/src/ir/transform.cc", line 134
+AttributeError: Invalid config option 'tl.ConvertForLoopToSerial' candidates are: tl.Simplify ,tl.ascend_auto_sync ,tl.ascend_memory_planning ,tl.ascend_auto_cross_core_sync ,tl.dynamic_alignment ,tl.disable_dynamic_tail_split ,tl.disable_warp_specialized ,tl.disable_safe_memory_legalize ,tir.contrib.ethos-u.copy_compute_reordering_max_copy_movements ,te.keep_schedule_record ,relax.FuseOps.max_depth ,relay.frontend.fill_span ,tir.enable_equiv_terms_in_cse_tir ,relay.collage.tvm_max_depth ,relay.FuseOps.link_params ,testing.immutable_module ,ir.enable_si_builder ,tir.disable_cse_tir ,tir.Simplify ,relax.fallback_device_type ,tir.RemoveNoOp ,relay.backend.use_meta_schedule_dispatch ,tir.is_entry_func ,tir.detect_global_barrier ,tir.HoistExpression ,tir.HoistIfThenElse ,tir.vtcm_capacity ,tir.disable_storage_rewrite ,tir.usmp.custom_algorithm ,tir.instrument_bound_checkers ,relax.lift_transform_params.consume_params ,tir.debug_keep_trivial_loop ,tir.disable_vectorize ,tir.use_async_copy ,tir.contrib.ethos-u.copy_compute_reordering_reorder_by_cycles ,tir.disable_assert ,tir.ptx_ldg32 ,tir.instrument_lwp ,relay.fallback_device_type ,tir.enable_debug ,tir.LoopPartition ,tir.merge_static_smem ,relax.backend.use_cuda_graph ,tir.experimental_dma_bypass_cache ,tir.add_lower_pass ,relax.transform.apply_legalize_ops ,tir.lwp_disable_func_prof ,tir.usmp.algorithm ,tir.lwp_max_depth ,tir.lwp_min_height ,tl.config_index_bitwidth ,tl.disable_tma_lower ,tir.noalias ,tir.instr_siblings ,tir.InjectDoubleBuffer ,tir.reset_start_id ,tir.ReduceBranchingThroughOvercompute ,tir.UnrollLoop ,tir.usmp.enable ,tir.usmp.use_workspace_io ,relay.collage.byoc_max_depth ,relay.collage.byoc_fusion_style ,relay.FuseOps.max_depth ,relay.remove_standalone_reshapes.enable ,relay.ToMixedPrecision.keep_orig_output_dtype ,relay.backend.tir_converter ,relay.backend.use_auto_scheduler ,relay.backend.use_meta_schedule ,tl.ascend_auto_cv_combine ,tl.debug_merge_shared_memory_allocations
+========================================================================================
+Performance Report
+========================================================================================
+Operator  : /home/Code/AscendOpGenAgent/output/20260424_155444/8_ScatterBlockUpdate
+Task Dir  : /home/Code/AscendOpGenAgent/output/20260424_155444/8_ScatterBlockUpdate
+Device    : npu
+Warmup    : 5
+Repeat    : 10
+Seed      : 0
+----------------------------------------------------------------------------------------
+Inputs
+----------------------------------------------------------------------------------------
+inputs[0]: list[3]
+inputs[0][0]: Tensor(shape=(2048, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[0][1]: Tensor(shape=(2048, 2), dtype=torch.int32, device=npu:0)
+inputs[0][2]: Tensor(shape=(2048, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[1]: list[3]
+inputs[1][0]: Tensor(shape=(4096, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[1][1]: Tensor(shape=(65536, 2), dtype=torch.int32, device=npu:0)
+inputs[1][2]: Tensor(shape=(65536, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[2]: list[3]
+inputs[2][0]: Tensor(shape=(10240, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[2][1]: Tensor(shape=(240, 2), dtype=torch.int32, device=npu:0)
+inputs[2][2]: Tensor(shape=(240, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[3]: list[3]
+inputs[3][0]: Tensor(shape=(8192, 128, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[3][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[3][2]: Tensor(shape=(262144, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[4]: list[3]
+inputs[4][0]: Tensor(shape=(10240, 128, 1), dtype=torch.float32, device=npu:0)
+inputs[4][1]: Tensor(shape=(1, 2), dtype=torch.int32, device=npu:0)
+inputs[4][2]: Tensor(shape=(1, 1), dtype=torch.float32, device=npu:0)
+inputs[5]: list[3]
+inputs[5][0]: Tensor(shape=(8192, 128, 256), dtype=torch.int8, device=npu:0)
+inputs[5][1]: Tensor(shape=(240, 2), dtype=torch.int32, device=npu:0)
+inputs[5][2]: Tensor(shape=(240, 256), dtype=torch.int8, device=npu:0)
+inputs[6]: list[3]
+inputs[6][0]: Tensor(shape=(2048, 128, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[6][1]: Tensor(shape=(1, 2), dtype=torch.int32, device=npu:0)
+inputs[6][2]: Tensor(shape=(1, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[7]: list[3]
+inputs[7][0]: Tensor(shape=(2048, 128, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[7][1]: Tensor(shape=(2048, 2), dtype=torch.int32, device=npu:0)
+inputs[7][2]: Tensor(shape=(2048, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[8]: list[3]
+inputs[8][0]: Tensor(shape=(2048, 256, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[8][1]: Tensor(shape=(240, 2), dtype=torch.int32, device=npu:0)
+inputs[8][2]: Tensor(shape=(240, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[9]: list[3]
+inputs[9][0]: Tensor(shape=(4096, 256, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[9][1]: Tensor(shape=(1, 2), dtype=torch.int32, device=npu:0)
+inputs[9][2]: Tensor(shape=(1, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[10]: list[3]
+inputs[10][0]: Tensor(shape=(4096, 256, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[10][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[10][2]: Tensor(shape=(262144, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[11]: list[3]
+inputs[11][0]: Tensor(shape=(10240, 512, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[11][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[11][2]: Tensor(shape=(16384, 256), dtype=torch.bfloat16, device=npu:0)
+inputs[12]: list[3]
+inputs[12][0]: Tensor(shape=(2048, 256, 128), dtype=torch.float32, device=npu:0)
+inputs[12][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[12][2]: Tensor(shape=(16384, 128), dtype=torch.float32, device=npu:0)
+inputs[13]: list[3]
+inputs[13][0]: Tensor(shape=(2048, 256, 256), dtype=torch.float32, device=npu:0)
+inputs[13][1]: Tensor(shape=(65536, 2), dtype=torch.int32, device=npu:0)
+inputs[13][2]: Tensor(shape=(65536, 256), dtype=torch.float32, device=npu:0)
+inputs[14]: list[3]
+inputs[14][0]: Tensor(shape=(4096, 512, 1), dtype=torch.float32, device=npu:0)
+inputs[14][1]: Tensor(shape=(240, 2), dtype=torch.int32, device=npu:0)
+inputs[14][2]: Tensor(shape=(240, 1), dtype=torch.float32, device=npu:0)
+inputs[15]: list[3]
+inputs[15][0]: Tensor(shape=(4096, 512, 128), dtype=torch.float32, device=npu:0)
+inputs[15][1]: Tensor(shape=(2048, 2), dtype=torch.int32, device=npu:0)
+inputs[15][2]: Tensor(shape=(2048, 128), dtype=torch.float32, device=npu:0)
+inputs[16]: list[3]
+inputs[16][0]: Tensor(shape=(10240, 128, 128), dtype=torch.float32, device=npu:0)
+inputs[16][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[16][2]: Tensor(shape=(262144, 128), dtype=torch.float32, device=npu:0)
+inputs[17]: list[3]
+inputs[17][0]: Tensor(shape=(2048, 512, 1), dtype=torch.int8, device=npu:0)
+inputs[17][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[17][2]: Tensor(shape=(262144, 1), dtype=torch.int8, device=npu:0)
+inputs[18]: list[3]
+inputs[18][0]: Tensor(shape=(2048, 512, 128), dtype=torch.int8, device=npu:0)
+inputs[18][1]: Tensor(shape=(1, 2), dtype=torch.int32, device=npu:0)
+inputs[18][2]: Tensor(shape=(1, 128), dtype=torch.int8, device=npu:0)
+inputs[19]: list[3]
+inputs[19][0]: Tensor(shape=(4096, 128, 1), dtype=torch.int8, device=npu:0)
+inputs[19][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[19][2]: Tensor(shape=(16384, 1), dtype=torch.int8, device=npu:0)
+inputs[20]: list[3]
+inputs[20][0]: Tensor(shape=(10240, 256, 1), dtype=torch.int8, device=npu:0)
+inputs[20][1]: Tensor(shape=(2048, 2), dtype=torch.int32, device=npu:0)
+inputs[20][2]: Tensor(shape=(2048, 1), dtype=torch.int8, device=npu:0)
+inputs[21]: list[3]
+inputs[21][0]: Tensor(shape=(10240, 512, 128), dtype=torch.int8, device=npu:0)
+inputs[21][1]: Tensor(shape=(65536, 2), dtype=torch.int32, device=npu:0)
+inputs[21][2]: Tensor(shape=(65536, 128), dtype=torch.int8, device=npu:0)
+inputs[22]: list[3]
+inputs[22][0]: Tensor(shape=(2048, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[22][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[22][2]: Tensor(shape=(262144, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[23]: list[3]
+inputs[23][0]: Tensor(shape=(2048, 128, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[23][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[23][2]: Tensor(shape=(262144, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[24]: list[3]
+inputs[24][0]: Tensor(shape=(2048, 128, 127), dtype=torch.bfloat16, device=npu:0)
+inputs[24][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[24][2]: Tensor(shape=(16384, 127), dtype=torch.bfloat16, device=npu:0)
+inputs[25]: list[3]
+inputs[25][0]: Tensor(shape=(2048, 128, 127), dtype=torch.float32, device=npu:0)
+inputs[25][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[25][2]: Tensor(shape=(16384, 127), dtype=torch.float32, device=npu:0)
+inputs[26]: list[3]
+inputs[26][0]: Tensor(shape=(2048, 128, 127), dtype=torch.int8, device=npu:0)
+inputs[26][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[26][2]: Tensor(shape=(16384, 127), dtype=torch.int8, device=npu:0)
+inputs[27]: list[3]
+inputs[27][0]: Tensor(shape=(2048, 128, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[27][1]: Tensor(shape=(16384, 2), dtype=torch.int64, device=npu:0)
+inputs[27][2]: Tensor(shape=(16384, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[28]: list[3]
+inputs[28][0]: Tensor(shape=(2048, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[28][1]: Tensor(shape=(2048, 2), dtype=torch.int32, device=npu:0)
+inputs[28][2]: Tensor(shape=(2048, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[29]: list[3]
+inputs[29][0]: Tensor(shape=(4096, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[29][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[29][2]: Tensor(shape=(16384, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[30]: list[3]
+inputs[30][0]: Tensor(shape=(10240, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[30][1]: Tensor(shape=(1, 2), dtype=torch.int32, device=npu:0)
+inputs[30][2]: Tensor(shape=(1, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[31]: list[3]
+inputs[31][0]: Tensor(shape=(2048, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[31][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[31][2]: Tensor(shape=(262144, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[32]: list[3]
+inputs[32][0]: Tensor(shape=(4096, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[32][1]: Tensor(shape=(65536, 2), dtype=torch.int32, device=npu:0)
+inputs[32][2]: Tensor(shape=(65536, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[33]: list[3]
+inputs[33][0]: Tensor(shape=(10240, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[33][1]: Tensor(shape=(240, 2), dtype=torch.int32, device=npu:0)
+inputs[33][2]: Tensor(shape=(240, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[34]: list[3]
+inputs[34][0]: Tensor(shape=(8192, 128, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[34][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[34][2]: Tensor(shape=(262144, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[35]: list[3]
+inputs[35][0]: Tensor(shape=(2048, 128, 1), dtype=torch.float32, device=npu:0)
+inputs[35][1]: Tensor(shape=(2048, 2), dtype=torch.int32, device=npu:0)
+inputs[35][2]: Tensor(shape=(2048, 1), dtype=torch.float32, device=npu:0)
+inputs[36]: list[3]
+inputs[36][0]: Tensor(shape=(4096, 128, 1), dtype=torch.float32, device=npu:0)
+inputs[36][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[36][2]: Tensor(shape=(16384, 1), dtype=torch.float32, device=npu:0)
+inputs[37]: list[3]
+inputs[37][0]: Tensor(shape=(10240, 128, 1), dtype=torch.float32, device=npu:0)
+inputs[37][1]: Tensor(shape=(1, 2), dtype=torch.int32, device=npu:0)
+inputs[37][2]: Tensor(shape=(1, 1), dtype=torch.float32, device=npu:0)
+inputs[38]: list[3]
+inputs[38][0]: Tensor(shape=(2048, 128, 1), dtype=torch.float32, device=npu:0)
+inputs[38][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[38][2]: Tensor(shape=(262144, 1), dtype=torch.float32, device=npu:0)
+inputs[39]: list[3]
+inputs[39][0]: Tensor(shape=(4096, 128, 1), dtype=torch.float32, device=npu:0)
+inputs[39][1]: Tensor(shape=(65536, 2), dtype=torch.int32, device=npu:0)
+inputs[39][2]: Tensor(shape=(65536, 1), dtype=torch.float32, device=npu:0)
+inputs[40]: list[3]
+inputs[40][0]: Tensor(shape=(10240, 128, 1), dtype=torch.float32, device=npu:0)
+inputs[40][1]: Tensor(shape=(240, 2), dtype=torch.int32, device=npu:0)
+inputs[40][2]: Tensor(shape=(240, 1), dtype=torch.float32, device=npu:0)
+inputs[41]: list[3]
+inputs[41][0]: Tensor(shape=(8192, 128, 256), dtype=torch.int8, device=npu:0)
+inputs[41][1]: Tensor(shape=(240, 2), dtype=torch.int32, device=npu:0)
+inputs[41][2]: Tensor(shape=(240, 256), dtype=torch.int8, device=npu:0)
+inputs[42]: list[3]
+inputs[42][0]: Tensor(shape=(2048, 128, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[42][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[42][2]: Tensor(shape=(262144, 1), dtype=torch.bfloat16, device=npu:0)
+inputs[43]: list[3]
+inputs[43][0]: Tensor(shape=(2048, 128, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[43][1]: Tensor(shape=(262144, 2), dtype=torch.int32, device=npu:0)
+inputs[43][2]: Tensor(shape=(262144, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[44]: list[3]
+inputs[44][0]: Tensor(shape=(2048, 128, 127), dtype=torch.bfloat16, device=npu:0)
+inputs[44][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[44][2]: Tensor(shape=(16384, 127), dtype=torch.bfloat16, device=npu:0)
+inputs[45]: list[3]
+inputs[45][0]: Tensor(shape=(2048, 128, 127), dtype=torch.float32, device=npu:0)
+inputs[45][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[45][2]: Tensor(shape=(16384, 127), dtype=torch.float32, device=npu:0)
+inputs[46]: list[3]
+inputs[46][0]: Tensor(shape=(2048, 128, 127), dtype=torch.int8, device=npu:0)
+inputs[46][1]: Tensor(shape=(16384, 2), dtype=torch.int32, device=npu:0)
+inputs[46][2]: Tensor(shape=(16384, 127), dtype=torch.int8, device=npu:0)
+inputs[47]: list[3]
+inputs[47][0]: Tensor(shape=(2048, 128, 128), dtype=torch.bfloat16, device=npu:0)
+inputs[47][1]: Tensor(shape=(16384, 2), dtype=torch.int64, device=npu:0)
+inputs[47][2]: Tensor(shape=(16384, 128), dtype=torch.bfloat16, device=npu:0)
+----------------------------------------------------------------------------------------
+Impl         Status       Mean(ms)       Median          Min          Max          Std
+----------------------------------------------------------------------------------------
+ascendc      OK              4.639        1.115        0.245       33.941        7.291
+----------------------------------------------------------------------------------------
+ascendc -> /home/Code/AscendOpGenAgent/output/20260424_155444/8_ScatterBlockUpdate/model_new_ascendc.py
+case[0] mean=0.309 ms, median=0.303 ms, samples(ms): [0.357, 0.305, 0.329, 0.301, 0.296, 0.296, 0.307, 0.307, 0.295, 0.293]
+case[1] mean=2.204 ms, median=2.200 ms, samples(ms): [2.196, 2.181, 2.169, 2.171, 2.187, 2.204, 2.207, 2.230, 2.246, 2.248]
+case[2] mean=0.294 ms, median=0.292 ms, samples(ms): [0.320, 0.296, 0.292, 0.291, 0.293, 0.290, 0.291, 0.293, 0.288, 0.286]
+case[3] mean=16.734 ms, median=16.728 ms, samples(ms): [16.906, 16.604, 16.844, 16.594, 16.898, 16.597, 16.873, 16.614, 16.841, 16.566]
+case[4] mean=0.273 ms, median=0.269 ms, samples(ms): [0.275, 0.313, 0.274, 0.271, 0.268, 0.266, 0.264, 0.271, 0.264, 0.267]
+case[5] mean=0.690 ms, median=0.688 ms, samples(ms): [0.712, 0.688, 0.691, 0.687, 0.684, 0.687, 0.680, 0.691, 0.692, 0.685]
+case[6] mean=0.446 ms, median=0.444 ms, samples(ms): [0.468, 0.465, 0.444, 0.441, 0.444, 0.435, 0.439, 0.446, 0.447, 0.434]
+case[7] mean=0.661 ms, median=0.655 ms, samples(ms): [0.664, 0.649, 0.651, 0.646, 0.724, 0.655, 0.654, 0.655, 0.657, 0.655]
+case[8] mean=0.478 ms, median=0.474 ms, samples(ms): [0.493, 0.476, 0.471, 0.473, 0.477, 0.478, 0.468, 0.504, 0.470, 0.472]
+case[9] mean=0.695 ms, median=0.691 ms, samples(ms): [0.727, 0.698, 0.690, 0.690, 0.691, 0.699, 0.686, 0.688, 0.694, 0.687]
+case[10] mean=33.104 ms, median=33.058 ms, samples(ms): [32.758, 33.320, 32.764, 33.339, 32.815, 33.313, 32.755, 33.301, 32.731, 33.941]
+case[11] mean=6.503 ms, median=6.505 ms, samples(ms): [6.546, 6.487, 6.533, 6.473, 6.518, 6.473, 6.514, 6.462, 6.528, 6.497]
+case[12] mean=2.306 ms, median=2.318 ms, samples(ms): [2.325, 2.319, 2.286, 2.318, 2.277, 2.322, 2.279, 2.318, 2.298, 2.319]
+case[13] mean=14.351 ms, median=14.345 ms, samples(ms): [14.531, 14.175, 14.519, 14.173, 14.508, 14.182, 14.550, 14.178, 14.528, 14.165]
+case[14] mean=0.281 ms, median=0.277 ms, samples(ms): [0.293, 0.276, 0.282, 0.275, 0.269, 0.277, 0.298, 0.276, 0.292, 0.267]
+case[15] mean=2.124 ms, median=2.126 ms, samples(ms): [2.133, 2.130, 2.123, 2.121, 2.115, 2.129, 2.119, 2.111, 2.133, 2.129]
+case[16] mean=28.025 ms, median=28.033 ms, samples(ms): [28.444, 27.742, 28.372, 27.663, 28.323, 27.633, 28.337, 27.669, 28.409, 27.657]
+case[17] mean=7.164 ms, median=7.144 ms, samples(ms): [7.274, 7.270, 7.165, 7.143, 7.128, 7.099, 7.145, 7.118, 7.167, 7.133]
+case[18] mean=0.492 ms, median=0.490 ms, samples(ms): [0.490, 0.513, 0.489, 0.482, 0.489, 0.480, 0.491, 0.503, 0.503, 0.481]
+case[19] mean=0.635 ms, median=0.632 ms, samples(ms): [0.631, 0.644, 0.646, 0.623, 0.631, 0.627, 0.631, 0.633, 0.649, 0.636]
+case[20] mean=0.287 ms, median=0.280 ms, samples(ms): [0.279, 0.302, 0.277, 0.281, 0.300, 0.276, 0.309, 0.278, 0.290, 0.277]
+case[21] mean=3.997 ms, median=4.009 ms, samples(ms): [4.006, 4.017, 4.022, 3.966, 4.028, 3.968, 4.012, 3.964, 4.021, 3.962]
+case[22] mean=8.081 ms, median=8.069 ms, samples(ms): [8.151, 8.163, 8.072, 8.069, 8.034, 8.062, 8.067, 8.049, 8.076, 8.069]
+case[23] mean=15.573 ms, median=15.557 ms, samples(ms): [15.498, 15.728, 15.495, 15.616, 15.496, 15.631, 15.499, 15.643, 15.490, 15.630]
+case[24] mean=1.098 ms, median=1.101 ms, samples(ms): [1.100, 1.126, 1.085, 1.105, 1.082, 1.104, 1.082, 1.102, 1.090, 1.103]
+case[25] mean=2.062 ms, median=2.071 ms, samples(ms): [2.071, 2.091, 2.071, 2.030, 2.075, 2.030, 2.097, 2.037, 2.092, 2.029]
+case[26] mean=0.836 ms, median=0.832 ms, samples(ms): [0.824, 0.874, 0.821, 0.838, 0.823, 0.833, 0.839, 0.832, 0.825, 0.850]
+case[27] mean=1.162 ms, median=1.160 ms, samples(ms): [1.145, 1.157, 1.192, 1.162, 1.141, 1.168, 1.169, 1.151, 1.177, 1.158]
+case[28] mean=0.271 ms, median=0.267 ms, samples(ms): [0.275, 0.288, 0.266, 0.266, 0.268, 0.267, 0.268, 0.267, 0.265, 0.281]
+case[29] mean=0.691 ms, median=0.687 ms, samples(ms): [0.688, 0.701, 0.682, 0.689, 0.687, 0.685, 0.708, 0.686, 0.684, 0.697]
+case[30] mean=0.276 ms, median=0.271 ms, samples(ms): [0.271, 0.280, 0.301, 0.277, 0.271, 0.270, 0.268, 0.270, 0.268, 0.285]
+case[31] mean=8.152 ms, median=8.143 ms, samples(ms): [8.096, 8.184, 8.169, 8.289, 8.286, 8.146, 8.141, 8.073, 8.079, 8.057]
+case[32] mean=2.159 ms, median=2.169 ms, samples(ms): [2.185, 2.191, 2.160, 2.178, 2.123, 2.123, 2.120, 2.118, 2.182, 2.211]
+case[33] mean=0.274 ms, median=0.269 ms, samples(ms): [0.267, 0.273, 0.261, 0.263, 0.285, 0.271, 0.288, 0.264, 0.260, 0.307]
+case[34] mean=16.727 ms, median=16.732 ms, samples(ms): [16.581, 16.840, 16.610, 16.843, 16.624, 16.861, 16.583, 16.847, 16.612, 16.872]
+case[35] mean=0.257 ms, median=0.251 ms, samples(ms): [0.258, 0.252, 0.267, 0.247, 0.277, 0.249, 0.245, 0.245, 0.247, 0.286]
+case[36] mean=0.776 ms, median=0.769 ms, samples(ms): [0.765, 0.771, 0.801, 0.777, 0.802, 0.766, 0.767, 0.759, 0.759, 0.792]
+case[37] mean=0.298 ms, median=0.294 ms, samples(ms): [0.303, 0.291, 0.306, 0.297, 0.315, 0.289, 0.285, 0.286, 0.285, 0.323]
+case[38] mean=9.479 ms, median=9.486 ms, samples(ms): [9.364, 9.500, 9.511, 9.567, 9.597, 9.472, 9.461, 9.410, 9.407, 9.500]
+case[39] mean=2.528 ms, median=2.524 ms, samples(ms): [2.535, 2.545, 2.527, 2.508, 2.521, 2.498, 2.541, 2.502, 2.506, 2.602]
+case[40] mean=0.282 ms, median=0.273 ms, samples(ms): [0.279, 0.273, 0.286, 0.273, 0.300, 0.273, 0.269, 0.270, 0.269, 0.331]
+case[41] mean=0.691 ms, median=0.690 ms, samples(ms): [0.696, 0.692, 0.712, 0.687, 0.684, 0.695, 0.687, 0.684, 0.685, 0.693]
+case[42] mean=8.040 ms, median=8.079 ms, samples(ms): [8.161, 8.157, 8.096, 8.076, 7.932, 7.937, 7.930, 7.925, 8.083, 8.101]
+case[43] mean=15.744 ms, median=15.746 ms, samples(ms): [15.553, 15.972, 15.528, 15.970, 15.513, 15.942, 15.522, 15.952, 15.558, 15.934]
+case[44] mean=1.128 ms, median=1.126 ms, samples(ms): [1.137, 1.116, 1.153, 1.119, 1.126, 1.125, 1.136, 1.115, 1.132, 1.118]
+case[45] mean=2.035 ms, median=2.034 ms, samples(ms): [2.041, 2.033, 2.044, 2.040, 2.033, 2.021, 2.027, 2.035, 2.033, 2.037]
+case[46] mean=0.828 ms, median=0.828 ms, samples(ms): [0.839, 0.823, 0.839, 0.821, 0.826, 0.830, 0.831, 0.828, 0.828, 0.818]
+case[47] mean=1.169 ms, median=1.163 ms, samples(ms): [1.187, 1.204, 1.159, 1.162, 1.149, 1.163, 1.167, 1.163, 1.197, 1.141]
+========================================================================================
+Performance Report
+========================================================================================
+Operator  : /home/Code/AscendOpGenAgent/output/20260424_155444/8_ScatterBlockUpdate
+Task Dir  : /home/Code/AscendOpGenAgent/output/20260424_155444/8_ScatterBlockUpdate
+Device    : npu
+Warmup    : 5
+Repeat    : 10
+Seed      : 0
+----------------------------------------------------------------------------------------
+Impl         Status       Mean(ms)       Median          Min          Max          Std
+----------------------------------------------------------------------------------------
+reference    OK             29.919        6.812        0.402      423.051       66.702
+tilelang     ERROR               -            -            -            -            -
+ascendc      OK              4.639        1.115        0.245       33.941        7.291
