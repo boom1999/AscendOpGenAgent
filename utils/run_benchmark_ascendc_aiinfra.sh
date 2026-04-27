@@ -170,27 +170,6 @@ touch "${RUN_DIR}/.lock"
 
 # ── 工具函数 ──
 
-# 产物校验
-check_deliverables() {
-    local task_dir="$1"
-    local required=("model_new_ascendc.py" "model_new_tilelang.py")
-    local missing=()
-    for f in "${required[@]}"; do
-        local fpath="${task_dir}/${f}"
-        if [[ ! -f "$fpath" ]]; then
-            missing+=("${f}(不存在)")
-        elif [[ ! -s "$fpath" ]]; then
-            missing+=("${f}(空文件)")
-        fi
-    done
-    if [[ ${#missing[@]} -gt 0 ]]; then
-        echo "MISSING:${missing[*]}"
-        return 1
-    fi
-    echo "OK"
-    return 0
-}
-
 # 执行单个算子（含重试）
 run_single_op() {
     local id="$1"
@@ -223,7 +202,7 @@ run_single_op() {
             --permission-mode acceptEdits \
             -p "$PROMPT" \
             --output-format stream-json \
-            --allowedTools 'Bash(*)' 'Read(*)' 'Write(*)' 'Edit(*)' 'Glob(*)' 'Grep(*)' 'Skill(*)' \
+            --allowedTools 'Bash(*)' 'Read(*)' 'Write(*)' 'Edit(*)' 'Glob(*)' 'Grep(*)' 'Skill(*)' 'Agent(*)' \
             >> "$op_log" 2>&1 &
         local claude_pid=$!
 
@@ -256,21 +235,26 @@ run_single_op() {
 
         echo "$(date '+%H:%M:%S') ${attempt_label} exit_code=${exit_code} elapsed=${elapsed}s" >> "$op_log"
 
-        # 产物校验
-        local check_result
-        check_result=$(check_deliverables "$target_dir")
-
-        if [[ "$check_result" == "OK" ]]; then
-            status="✅ 成功"
-            echo "$(date '+%H:%M:%S') ${attempt_label} 产物校验通过" >> "$op_log"
+        if [[ "$timed_out" == true ]]; then
+            echo "$(date '+%H:%M:%S') ${attempt_label} 超时" >> "$op_log"
+            status="⏰ 超时"
             break
-        else
-            echo "$(date '+%H:%M:%S') ${attempt_label} 产物校验失败: ${check_result}" >> "$op_log"
-            if [[ "$timed_out" == true ]]; then
-                echo "$(date '+%H:%M:%S') ${attempt_label} 超时，不再重试" >> "$op_log"
-                status="⏰ 超时"
+        elif [[ $exit_code -eq 0 ]]; then
+            # 产物校验：必须有 model_new_ascendc.py 和 kernel/ 下的文件
+            if [[ -f "${target_dir}/model_new_ascendc.py" ]] && \
+               [[ -d "${target_dir}/kernel" ]] && \
+               [[ $(find "${target_dir}/kernel" -type f 2>/dev/null | wc -l) -gt 0 ]]; then
+                status="✅ 成功"
+                echo "$(date '+%H:%M:%S') ${attempt_label} 成功（产物校验通过）" >> "$op_log"
                 break
+            else
+                echo "$(date '+%H:%M:%S') ${attempt_label} exit_code=0 但缺少关键产物，视为失败" >> "$op_log"
+                if [[ $attempt -lt $max_attempts ]]; then
+                    echo "$(date '+%H:%M:%S') ${attempt_label} 将重试..." >> "$op_log"
+                fi
             fi
+        else
+            echo "$(date '+%H:%M:%S') ${attempt_label} 失败 (exit_code=${exit_code})" >> "$op_log"
             if [[ $attempt -lt $max_attempts ]]; then
                 echo "$(date '+%H:%M:%S') ${attempt_label} 将重试..." >> "$op_log"
             fi
