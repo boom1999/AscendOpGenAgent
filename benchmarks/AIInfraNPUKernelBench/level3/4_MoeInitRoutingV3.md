@@ -1,6 +1,6 @@
 ## 功能说明
 
-- 算子功能：MoE的routing计算，，支持不量化和动态量化模式。
+- 算子功能：MoE的routing计算，根据MoeGatingTopK的计算结果做routing处理，支持不量化和动态量化模式。相比V2接口增加了动态量化功能（支持输出expandedX的int8动态量化输出）、增加参数activeExpertRangeOptional（支持筛选有效范围内的expertId）。
 
 - 计算公式：  
 
@@ -51,6 +51,45 @@
     $$
     availableIdxNum = |\{x\in expertIdx| expert\_start \le x<expert\_end \ \}|
     $$
+
+## 参数说明
+
+| 参数名 | 输入/输出 | 描述 | 数据类型 | shape |
+|---|---|---|---|---|
+| x | 输入 | MOE的输入token特征 | FLOAT32、FLOAT16、BFLOAT16、INT8、HIFLOAT8 | ND |
+| expert_idx | 输入 | 每一行特征对应的K个处理专家，元素专家id不能超过专家数 | INT32 | ND |
+| scale | 可选输入 | 用于计算quant结果的参数 | FLOAT32 | ND |
+| offset | 可选输入 | 用于计算quant结果的偏移值（非量化和动态quant场景下不输入） | FLOAT32 | ND |
+| active_num | 属性 | 总的最大处理row数，输出expandedXOut只有这么多行有效 | INT | - |
+| expert_capacity | 属性 | 每个专家能够处理的tokens数，取值>=0 | INT | - |
+| expert_num | 属性 | 专家数，expertTokensNumType为key_value模式时取值[0,5120]，其它模式[0,10240] | INT | - |
+| drop_pad_mode | 属性 | 是否为DropPad场景。0=Dropless，1=DropPad | INT | - |
+| expert_tokens_num_type | 属性 | 0=cumsum模式，1=count模式，2=key_value模式 | INT | - |
+| expert_tokens_num_flag | 属性 | 是否输出expertTokensCountOrCumsumOut（true/false） | BOOL | - |
+| quant_mode | 属性 | -1=不量化，0=静态quant，1=动态quant，2/3=MXFP8量化，6/7/8=HIF8量化 | INT | - |
+| active_expert_range | 可选属性 | [expertStart, expertEnd]，活跃expert范围，左闭右开 | ListInt | - |
+| row_idx_type | 属性 | expandedRowIdxOut的索引类型。0=gather，1=scatter | INT | - |
+| expanded_x_out | 输出 | 根据expertIdx扩展过的特征 | 非量化同x；量化时INT8/FLOAT8_E5M2/FLOAT8_E4M3FN/HIFLOAT8 | ND |
+| expanded_row_idx_out | 输出 | expandedXOut和x的索引映射关系 | INT32 | ND |
+| expert_tokens_count_or_cumsum_out | 输出 | expert对应的处理token总数或key-value对 | INT64 | ND |
+| expanded_scale_out | 输出 | 量化计算过程中的scale中间值 | FLOAT32、FLOAT8_E8M0 | ND |
+
+## 约束说明
+
+- 输入值域限制：
+  - activeNum当前未使用，校验需等于NUM_ROWS*K。
+  - expertCapacity当前未使用，仅校验非空。
+  - dropPadMode当前只支持0，代表Dropless场景。
+  - expertTokensNumType当前只支持1和2，分别代表count模式和key_value模式。
+  - expertTokensNumFlag只支持true，代表输出expertTokensCountOrCumsumOut。
+  - quantMode：
+    - Atlas A2/A3 训练/推理系列：支持1、-1（动态量化和不量化）。
+    - Ascend 950PR/950DT：支持-1、1、2、3、6、7、8。
+  - HIFLOAT8输入仅quantMode=6时支持。
+- 性能模板：
+  - Atlas A2/A3系列支持两种性能模板。
+  - 低时延性能模板条件：x shape=(1, 7168)，expertIdx shape=(1, 8)，scale shape=(256, 7168)，x为BFLOAT16，quantMode=1，expertTokensNumType=2，expertNum=256，activeExpertRange=[0, 256]。
+  - 大batch性能模板条件：NUM_ROWS范围[384, 8192]，K=8，expertNum=256，expertEnd-expertStart<=32，quantMode=-1，rowIdxType=1，expertTokensNumType=1。
 
 ```python
 class Model(nn.Module):

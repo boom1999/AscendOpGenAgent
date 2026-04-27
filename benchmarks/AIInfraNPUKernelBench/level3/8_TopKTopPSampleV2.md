@@ -223,6 +223,43 @@ logits中的每一行logits[batch][:]根据相应的topK[batch]、topP[batch]、
     logitsIdx[b][v] = Index(logitsSortMasked[b][v])
     $$
 
+## 参数说明
+
+| 参数名 | 输入/输出 | 描述 | 数据类型 | shape |
+|---|---|---|---|---|
+| logits | 输入 | 待采样的输入词频 | FLOAT16、BFLOAT16、FLOAT32 | 2维 [batch, voc_size] |
+| top_k | 输入 | 每个batch采样的k值 | INT32 | 1维 [batch] |
+| top_p | 输入 | 每个batch采样的p值 | FLOAT16、BFLOAT16、FLOAT32 | 1维 [batch] |
+| q | 可选输入 | 指数采样矩阵，维度与尺寸需与logits一致 | FLOAT32 | 2维 [batch, voc_size] |
+| min_ps | 可选输入 | 每个batch采样的minP值 | FLOAT16、BFLOAT16、FLOAT32 | 1维 [batch] |
+| eps | 属性 | softmax和权重采样中防止除零，建议1e-8 | FLOAT32 | 标量 |
+| is_need_logits | 属性 | 控制logitsTopKPSelect的输出条件，建议设置为0 | BOOL | - |
+| top_k_guess | 属性 | topP遍历采样时的候选logits大小 | INT64 | 标量 |
+| ks_max | 属性 | topK采样时最大topK值，必须为正整数 | INT64 | 标量 |
+| input_is_logits | 属性 | 输入的logits是否未进行归一化，默认true | BOOL | - |
+| is_need_sample_result | 属性 | 是否输出中间计算结果，默认false | BOOL | - |
+| logits_select_idx | 输出 | 每个batch中词频最大元素在输入logits中的位置索引 | INT64 | 1维 [batch] |
+| logits_top_kp_select | 输出 | topK-topP计算后剩余未被过滤的logits | FLOAT32 | 2维 [batch, voc_size] |
+| logits_idx | 可选输出 | topK-topP-minP计算后的中间采样结果在输入logits中的索引 | INT64 | 2维 [batch, voc_size] |
+| logits_sort_masked | 可选输出 | topK-topP-minP计算后的中间采样结果 | FLOAT32 | 2维 [batch, voc_size] |
+
+## 约束说明
+
+- 输入值域限制：
+  - 对于所有参数，它们的尺寸必须满足 batch>0，0<vocSize<=2^20。
+  - ksMax的值域为[1, 1024]。
+- 输入shape限制：
+  - logits、q、logitsTopKPSelect、logitsIdx、logitsSortMasked的尺寸和维度必须完全一致，目前仅支持两维。
+  - logits、topK、topP、minPs、logitsSelectIdx除最后一维以外的所有维度必须顺序和大小完全一致。目前logits只能是2维，topK、topP、logitsSelectIdx必须是1维非空Tensor。
+  - logits、topK、topP不允许空Tensor作为输入。
+- 其他限制：
+  - 如果需要单独跳过topK模块，请传入[batch, 1]大小的Tensor，并使每个元素均为无效值。
+  - 如果min(ksMaxAligned, 1024)<topK[batch]<vocSize[batch]，则视为选择当前batch的全部有效元素并跳过topK采样。其中ksMaxAligned为ksMax向上对齐到8的整数倍。
+  - 如果需要单独跳过topP模块，请传入[batch, 1]大小的Tensor，并使每个元素均>=1。
+  - 如果需要单独跳过minP模块，请传入minPs=nullptr或者传入[batch, 1]大小的Tensor，并使每个元素均<=0。
+  - 如果需要单独跳过sample模块，传入q=nullptr即可；如需使用sample模块，则必须传入尺寸为[batch, vocSize]的Tensor。
+  - 如果需要输出中间结果，isNeedSampleResult设为true，并且传入q=nullptr，此时logitsSelectIdx不输出。
+
 ```python
 class Model(nn.Module):
     """TopK-TopP-MinP sampling V2 with extended features."""

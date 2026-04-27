@@ -27,19 +27,17 @@ class Model(nn.Module):
         local_out_list: List[torch.Tensor],
         update_type: int = 0,
     ) -> List[torch.Tensor]:
-        # NPU kernel only supports fp32 output; cast fp16/bf16 inputs to fp32
-        out_dtype = local_out_list[0].dtype
-        lse_npu = [t.float().npu() for t in lse_list]
-        out_npu = [t.float().npu() for t in local_out_list]
+        lse_npu = [t.npu() for t in lse_list]
+        out_npu = [t.npu() for t in local_out_list]
 
         all_out, lse_out = torch_npu.npu_attention_update(lse_npu, out_npu, update_type)
-        result = [all_out.cpu().to(out_dtype)]
+        result = [all_out.cpu()]
         # lse_out may be None for update_type=0
         if lse_out is not None:
             result.append(lse_out.cpu())
         else:
             # Reference always returns lse_out; compute it via log-sum-exp on CPU
-            lse_cpu = [t.detach().float() for t in lse_list]
+            lse_cpu = [t.detach() for t in lse_list]
             all_lse = torch.stack(lse_cpu, dim=0)
             lse_max, _ = torch.max(all_lse, dim=0)
             lse_sub_exp = torch.exp(all_lse - lse_max.unsqueeze(0))

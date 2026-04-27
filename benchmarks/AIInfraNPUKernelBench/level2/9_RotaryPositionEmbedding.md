@@ -1,90 +1,91 @@
 ## 功能说明
 
-- 接口功能：执行单路旋转位置编码计算。
-- 计算公式：
-    （1）half模式（mode等于0）：
+执行单路旋转位置编码计算。
 
-    $$
-    x1 = x[..., : x.shape[-1] // 2]
-    $$
+## 计算公式
 
-    $$
-    x2 = x[..., x.shape[-1] // 2 :]
-    $$
+（1）half模式（mode等于0）：
 
-    $$
-    x\_rotate = torch.cat((-x2, x1), dim=-1)
-    $$
+$$
+x1 = x[..., : x.shape[-1] // 2], \quad x2 = x[..., x.shape[-1] // 2 :]
+$$
 
-    $$
-    y = x * cos + x\_rotate * sin
-    $$
+$$
+x\_rotate = torch.cat((-x2, x1), dim=-1)
+$$
 
-    （2）interleave模式（mode等于1）：
+$$
+y = x * cos + x\_rotate * sin
+$$
 
-    $$
-    x1 = x[..., ::2].view(-1, 1)
-    $$
+（2）interleave模式（mode等于1）：
 
-    $$
-    x2 = x[..., 1::2].view(-1, 1)
-    $$
+$$
+x1 = x[..., ::2].view(-1, 1), \quad x2 = x[..., 1::2].view(-1, 1)
+$$
 
-    $$
-    x\_rotate = torch.cat((-x2, x1), dim=-1).view(x.shape[0], x.shape[1], x.shape[2], x.shape[3])
-    $$
+$$
+x\_rotate = torch.cat((-x2, x1), dim=-1).view(x.shape)
+$$
 
-    $$
-    y = x * cos + x\_rotate * sin
-    $$
+$$
+y = x * cos + x\_rotate * sin
+$$
 
-    （3）quarter模式（mode等于2）：
+（3）quarter模式（mode等于2）：
 
-    $$
-    x1 = x[..., : x.shape[-1] // 4]
-    $$
+$$
+x1 = x[..., : x.shape[-1] // 4], \quad x2 = x[..., x.shape[-1] // 4 : x.shape[-1] // 2]
+$$
 
-    $$
-    x2 = x[..., x.shape[-1] // 4 : x.shape[-1] // 2]
-    $$
+$$
+x3 = x[..., x.shape[-1] // 2 : x.shape[-1] // 4 * 3], \quad x4 = x[..., x.shape[-1] // 4 * 3 :]
+$$
 
-    $$
-    x3 = x[..., x.shape[-1] // 2 : x.shape[-1] // 4 * 3]
-    $$
+$$
+x\_rotate = torch.cat((-x2, x1, -x4, x3), dim=-1)
+$$
 
-    $$
-    x4 = x[..., x.shape[-1] // 4 * 3 :]
-    $$
+$$
+y = x * cos + x\_rotate * sin
+$$
 
-    $$
-    x\_rotate = torch.cat((-x2, x1, -x4, x3), dim=-1)
-    $$
+（4）interleave-half模式（mode等于3）：先将奇数位输入抽取到前半部分，偶数位输入抽取到后半部分，再进行half处理：
 
-    $$
-    y = x * cos + x\_rotate * sin
-    $$
+$$
+x1 = x[..., ::2], \quad x2 = x[..., 1::2]
+$$
 
-    （4）interleave-half模式（mode等于3），该模式会先将奇数位的输入抽取到前半部分，将偶数位的输入抽取到后半部分，再进行half处理：
+$$
+x\_part1 = torch.cat((x1, x2), dim=-1), \quad x\_part2 = torch.cat((-x2, x1), dim=-1)
+$$
 
-    $$
-    x1 = x[..., ::2]
-    $$
+$$
+y = x\_part1 * cos + x\_part2 * sin
+$$
 
-    $$
-    x2 = x[..., 1::2]
-    $$
+## 参数说明
 
-    $$
-    x\_part1 = torch.cat((x1, x2), dim=-1)
-    $$
+| 参数名 | 输入/输出 | 描述 | 数据类型 | shape |
+|---|---|---|---|---|
+| x | 输入 | 待执行旋转位置编码的张量 | BFLOAT16、FLOAT16、FLOAT32 | ND |
+| cos | 输入 | 参与计算的位置编码cos张量 | BFLOAT16、FLOAT16、FLOAT32 | ND |
+| sin | 输入 | 参与计算的位置编码sin张量 | BFLOAT16、FLOAT16、FLOAT32 | ND |
+| mode | 属性 | 旋转模式：0=half, 1=interleave, 2=quarter, 3=interleave-half | INT64 | 标量 |
+| out | 输出 | 旋转位置编码结果张量 | BFLOAT16、FLOAT16、FLOAT32 | ND |
 
-    $$
-    x\_part2 = torch.cat((-x2, x1), dim=-1)
-    $$
+## 约束说明
 
-    $$
-    y = x\_part1 * cos + x\_part2 * sin
-    $$
+- Ascend 950PR/950DT：
+  - 输入张量x共四维，x、cos、sin及输出y的最后一维大小必须相同，且小于等于1024。
+  - half/interleave/interleave-half模式最后一维必须能被2整除，quarter模式必须被4整除。
+  - x和y的shape必须完全相同。cos和sin shape必须相同，需与x满足broadcast关系。
+- Atlas A3/A2 训练/推理系列：
+  - 输入张量x支持BNSD、BSND、SBND排布。
+  - D维度大小满足D<896，且必须为2的倍数。x和y的shape必须完全相同，cos和sin shape必须相同。
+  - half模式：B, N < 1000；cos/sin支持多种broadcast格式。
+  - interleave模式：B*N < 1000。
+- Kirin X90/Kirin 9030：不支持BFLOAT16。
 
 ```python
 class Model(nn.Module):

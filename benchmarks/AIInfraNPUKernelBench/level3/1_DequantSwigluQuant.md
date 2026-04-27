@@ -45,6 +45,46 @@
 
   其中，x\_glu表示dequantOut<sub>i</sub>的偶数索引部分，x\_linear表示dequantOut<sub>i</sub>的奇数索引部分。
 
+## 参数说明
+
+| 参数名 | 输入/输出 | 描述 | 数据类型 | shape |
+|---|---|---|---|---|
+| x | 输入 | 输入待处理的数据 | FLOAT16、BFLOAT16、INT32 | ND |
+| weight_scale | 输入 | 权重反量化scale | FLOAT32 | ND |
+| activation_scale | 输入 | 激活函数的反量化scale | FLOAT32 | ND |
+| bias | 输入 | Matmul的bias | FLOAT32、FLOAT16、BFLOAT16、INT32 | ND |
+| quant_scale | 输入 | 量化的scale | FLOAT32、FLOAT16 | ND |
+| quant_offset | 输入 | 量化的offset | FLOAT32 | ND |
+| group_index | 输入 | MoE分组需要的group_index | INT64 | ND |
+| activate_left | 属性 | 是否对输入的左半部分做swiglu激活 | BOOL | - |
+| quant_mode | 属性 | 量化模式（dynamic等） | STRING | - |
+| dst_type | 属性 | 指定输出y的数据类型 | INT64 | - |
+| round_mode | 属性 | 输出y结果的舍入模式 | STRING | - |
+| activate_dim | 属性 | swish计算时选择的指定切分轴 | INT64 | - |
+| swiglu_mode | 属性 | swiglu的计算模式（0=标准, 1=变体） | INT64 | - |
+| clamp_limit | 属性 | 变体swiglu使用的门限值 | FLOAT32 | - |
+| glu_alpha | 属性 | 变体swiglu使用的参数 | FLOAT32 | - |
+| glu_bias | 属性 | 变体swiglu使用的偏差参数 | FLOAT32 | - |
+| y | 输出 | 输出结果 | INT8、FLOAT8_E5M2、FLOAT8_E4M3FN、FLOAT4_E2M1、FLOAT4_E1M2 | ND |
+| scale | 输出 | 动态量化scale输出 | FLOAT32 | ND |
+
+- Kirin X90/Kirin 9030：输入x不支持BFLOAT16；输入bias不支持BFLOAT16；输入quant_scale不支持FLOAT16；输出y不支持FLOAT8_E5M2、FLOAT8_E4M3FN、FLOAT4_E2M1、FLOAT4_E1M2。
+
+## 约束说明
+
+- Ascend 950PR/950DT：
+  - 输入x对应activate_dim的维度需要是2的倍数，且x的维数必须大于1维。
+  - 当输入x的数据类型为INT32时，weight_scale不能为空；当输入x的数据类型不为INT32时，weight_scale不允许输入。
+  - 当输入x的数据类型不为INT32时，activation_scale不允许输入。
+  - 当输入x的数据类型不为INT32时，bias不允许输入。
+  - 当输出y的数据类型为FLOAT4_E2M1、FLOAT4_E1M2时，y的最后一维需要是2的倍数。
+  - 输出y的尾轴不超过5120。
+- Atlas A2/A3 训练/推理系列：
+  - swiglu_mode、clamp_limit、glu_alpha和glu_bias四个参数用于GPT-OSS变体SwiGLU的使用。
+  - x的最后一维需要是2的倍数，且x的维数必须大于1维。
+  - 当quant_mode为static时，quant_scale和quant_offset为1维，值为1；quant_mode为dynamic时，quant_scale和quant_offset可选。
+  - 算子支持的输入张量内存大小有上限：weight_scale张量内存+bias张量内存+quant_scale张量内存+quant_offset张量内存+(activation_scale张量内存+scale张量内存)/40+x张量最后一维H内存*10 < 192KB。
+
 ```python
 class Model(nn.Module):
     """Dequant + Swiglu + Quant fused operator."""

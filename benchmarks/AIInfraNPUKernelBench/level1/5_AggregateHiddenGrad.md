@@ -1,23 +1,49 @@
 ## 功能说明
 
-- 接口功能：对hidden层的token之间进行一维分组卷积操作的反向梯度计算。
+对hidden层的token之间进行一维分组卷积操作的反向梯度计算。
 
-- 计算公式：
-  假定卷积输入input、卷积输出的梯度grad_output和卷积输入的梯度grad_input的shape是[S, B, H]，weight的shape是[W, H]，i和j分别表示S/B轴的索引，k为卷积窗口W内的索引，那么计算将被表示为：
+## 计算公式
 
-  $$
-  grad\_output\_masked[i,j] = mask[j,i] * grad\_output[i,j]
-  $$
+假定卷积输入input、卷积输出的梯度grad_output和卷积输入的梯度grad_input的shape是[S, B, H]，weight的shape是[W, H]，i和j分别表示S/B轴的索引，k为卷积窗口W内的索引，那么计算将被表示为：
 
-  $$
-  grad\_input[i,j] = \sum_{k=0}^{W-1} grad\_output\_masked[i+k,j] * weight[W-1-k]
-  $$
+$$
+grad\_output\_masked[i,j] = mask[j,i] * grad\_output[i,j]
+$$
 
-  $$
-  grad\_weight[k] = \sum_{j=0}^{B-1}\sum_{i=0}^{S-1} grad\_output\_masked[i+W-1-k,j] * input[i,j]
-  $$
+$$
+grad\_input[i,j] = \sum_{k=0}^{W-1} grad\_output\_masked[i+k,j] * weight[W-1-k]
+$$
 
-  其中，无效位置的padding为0填充；当前W仅支持3。
+$$
+grad\_weight[k] = \sum_{j=0}^{B-1}\sum_{i=0}^{S-1} grad\_output\_masked[i+W-1-k,j] * input[i,j]
+$$
+
+其中，无效位置的padding为0填充；当前W仅支持3。
+
+## 参数说明
+
+| 参数名 | 输入/输出 | 描述 | 数据类型 | shape |
+|---|---|---|---|---|
+| grad_output | 输入 | 卷积输出的梯度，不支持非连续 | bfloat16、float16 | (S, B, H) |
+| input | 输入 | 卷积输入，不支持非连续，shape和数据类型与grad_output一致 | bfloat16、float16 | (S, B, H) |
+| weight | 输入 | 卷积权重，不支持非连续，W目前只支持3，数据类型需与grad_output一致 | bfloat16、float16 | (W, H) |
+| mask | 可选输入 | 卷积操作的输出掩码，不指定可传入None表示无掩码操作 | bool | (B, S) |
+| grad_input | 输出 | 卷积输入input的梯度，shape和数据类型与grad_output一致 | 同grad_output | (S, B, H) |
+| grad_weight | 输出 | 卷积权重weight的梯度，W目前只支持3，数据类型与grad_output一致 | 同grad_output | (W, H) |
+
+维度含义：B（Batch Size）、S（Sequence Length）、H（Head Size）、W（Window Size）。
+
+## 约束说明
+
+```
+- 该接口不支持图模式。
+- grad_output、input、weight、grad_input和grad_weight的数据类型必须一致。
+- 输入输出的shape数据范围约束：
+  - B（Batchsize）：取值范围 1~8
+  - S（SeqLength）：取值范围 1~32K
+  - H（hiddenSize）：取值范围 192*2 ~ 192*128
+  - W：当前只支持3
+```
 
 ```python
 class Model(nn.Module):

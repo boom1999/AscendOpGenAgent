@@ -1,7 +1,10 @@
 ## 功能说明
 
-- 接口功能：将各SP域PA算子的输出的中间结果lse，localOut两个局部变量结果更新成全局结果。
-- 计算公式：
+将各SP域PA算子的输出的中间结果lse，localOut两个局部变量结果更新成全局结果。
+
+## 计算公式
+
+输入 $lse_i$ 和 $O_i$、输出 $O$：
 
 $$
 lse_{max} = \text{max}lse_i
@@ -18,6 +21,24 @@ $$
 $$
 O = \sum_i O_i \cdot \text{exp}(lse_i - lse_m)
 $$
+
+## 参数说明
+
+| 参数名 | 输入/输出 | 描述 | 数据类型 | shape |
+|---|---|---|---|---|
+| lse_i | 输入 | 各SP域的局部lse | FLOAT32 | ND |
+| O_i | 输入 | 各SP域的局部attention out | FLOAT32、FLOAT16、BFLOAT16 | ND |
+| lse_m | 输出 | 更新后的全局lse | FLOAT32 | ND |
+| O | 输出 | 更新后的全局attention out | FLOAT32、FLOAT16、BFLOAT16 | ND |
+
+## 约束说明
+
+- Atlas A2 训练/推理系列、Atlas A3 训练/推理系列：支持FLOAT32、FLOAT16、BFLOAT16的O_i和O。
+- Ascend 950PR/950DT：支持FLOAT32、FLOAT16、BFLOAT16的O_i和O，且O_i和O数据类型相同。
+- 序列并行的并行度sp取值范围[1, 16]。
+- headDim取值范围[8, 512]且是8的倍数。
+- 不支持非连续的Tensor。
+- 支持空Tensor。
 
 ```python
 class Model(nn.Module):
@@ -53,7 +74,7 @@ class Model(nn.Module):
         """
         out_dtype = local_out_list[0].dtype
 
-        lse_cpu = [t.detach().float() for t in lse_list]
+        lse_cpu = [t.detach() for t in lse_list]
         out_cpu = [t.detach().float() for t in local_out_list]
 
         all_lse = torch.stack(lse_cpu, dim=0)

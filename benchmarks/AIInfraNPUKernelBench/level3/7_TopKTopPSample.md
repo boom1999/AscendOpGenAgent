@@ -150,6 +150,33 @@ logits中的每一行logits[batch][:]根据相应的topK[batch]、topP[batch]、
 
   其中0≤b<sortedValue.size(0)，0≤v<sortedValue.size(1)。
 
+## 参数说明
+
+| 参数名 | 输入/输出 | 描述 | 数据类型 | shape |
+|---|---|---|---|---|
+| logits | 输入 | 待采样的输入词频，词频索引固定为最后一维 | FLOAT16、BFLOAT16 | 2维 [batch, voc_size] |
+| top_k | 输入 | 每个batch采样的k值 | INT32 | 1维 [batch] |
+| top_p | 输入 | 每个batch采样的p值，dtype需与logits一致 | FLOAT16、BFLOAT16 | 1维 [batch] |
+| q | 输入 | topK-topP采样输出的指数采样矩阵，shape需与logits一致 | FLOAT32 | 2维 [batch, voc_size] |
+| eps | 属性 | softmax和权重采样中防止除零，建议1e-8 | DOUBLE | 标量 |
+| is_need_logits | 属性 | 控制logitsTopKPSelect的输出条件，建议设置为0 | BOOL | - |
+| top_k_guess | 属性 | 每个batch在尝试topP遍历采样logits时的候选logits大小，必须为正整数 | INT64 | 标量 |
+| logits_select_idx | 输出 | 每个batch中词频最大元素在输入logits中的位置索引 | INT64 | 1维 [batch] |
+| logits_top_kp_select | 输出 | topK-topP计算后，输入logits中剩余未被过滤的logits | FLOAT32 | 2维 [batch, voc_size] |
+
+## 约束说明
+
+- 确定性计算：aclnnTopKTopPSample默认确定性实现。
+- 对于所有采样参数，它们的尺寸必须满足 batch>0，0<vocSize<=2^20。
+- topK和topP只接受非负值作为合法输入；传入0和负数不会跳过相应batch的采样，反而会引起预期之外的错误。
+- logits、q、logitsTopKPSelect的尺寸和维度必须完全一致。
+- logits、topK、topP、logitsSelectIdx除最后一维以外的所有维度必须顺序和大小完全一致。目前logits只能是2维，topK、topP、logitsSelectIdx必须是1维非空Tensor。
+- logits、topK、topP不允许空Tensor作为输入。
+- 如果需要单独跳过topK模块，请传入[batch, 1]大小的Tensor，并使每个元素均为无效值。
+- 如果1024<topK[batch]<vocSize[batch]，则视为选择当前batch的全部有效元素并跳过topK采样。
+- 如果需要单独跳过topP模块，请传入[batch, 1]大小的Tensor，并使每个元素均>=1。
+- 如果需要单独跳过sample模块，传入q=nullptr即可；如需使用sample模块，则必须传入尺寸为[batch, vocSize]的Tensor。
+
 ```python
 class Model(nn.Module):
     """TopK-TopP sampling: topK + topP + exponential sampling."""

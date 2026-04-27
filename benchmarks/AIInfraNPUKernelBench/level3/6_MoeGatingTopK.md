@@ -36,6 +36,39 @@
   yOut = y / (ReduceSum(y, dim=-1)+eps)*routedScalingFactor
   $$
 
+## 参数说明
+
+| 参数名 | 输入/输出 | 描述 | 数据类型 | shape |
+|---|---|---|---|---|
+| x | 输入 | 待计算输入 | FLOAT16、BFLOAT16、FLOAT32 | ND |
+| bias | 可选输入 | 与输入x进行计算的bias值 | FLOAT16、BFLOAT16、FLOAT32 | ND |
+| k | 属性 | topk的k值 | INT64 | 标量 |
+| k_group | 属性 | 分组排序后取的group个数 | INT64 | 标量 |
+| group_count | 属性 | 分组的总个数 | INT64 | 标量 |
+| routed_scaling_factor | 属性 | 计算yOut使用的系数 | DOUBLE | 标量 |
+| eps | 属性 | 计算yOut使用的eps系数 | DOUBLE | 标量 |
+| group_select_mode | 属性 | 分组排序方式。0=最大值排序，1=topk2的sum值排序 | INT64 | 标量 |
+| renorm | 属性 | renorm标记，仅支持0（先norm后topk） | INT64 | 标量 |
+| norm_type | 属性 | norm函数类型。0=Softmax，1=Sigmoid | INT64 | 标量 |
+| out_flag | 属性 | 是否输出norm操作结果（true/false） | BOOL | - |
+| y_out | 输出 | 对x做norm、分组排序topk后计算的结果 | FLOAT16、BFLOAT16、FLOAT32 | ND |
+| expert_idx_out | 输出 | 对x做norm、分组排序topk后的索引 | INT32 | ND |
+| norm_out | 可选输出 | norm计算的输出结果（out_flag=true时输出） | FLOAT32 | ND |
+
+## 约束说明
+
+- 输入shape限制：
+  - x最后一维（即专家数）要求不大于2048。
+- 输入值域限制：
+  - 要求 1 <= k <= x_shape[-1] / groupCount * kGroup。
+  - 要求 1 <= kGroup <= groupCount，并且 kGroup * x_shape[-1] / groupCount 的值要大于等于k。
+  - 要求 groupCount > 0，x_shape[-1]能够被groupCount整除且整除后的结果大于groupSelectMode，并且整除的结果按照32个数对齐后乘groupCount的结果不大于2048。
+  - renorm仅支持0，表示先进行norm操作，再计算topk。
+- 其他限制：
+  - groupSelectMode取值0和1：0表示使用最大值对group进行排序，1表示使用topk2的sum值对group进行排序。
+  - normType取值0和1：0表示使用Softmax函数，1表示使用Sigmoid函数。
+  - outFlag取值true和false：true表示输出normOut，false表示不输出。
+
 ```python
 class Model(nn.Module):
     """MoE Gating TopK: Sigmoid/SoftMax + group sort + topK expert selection."""

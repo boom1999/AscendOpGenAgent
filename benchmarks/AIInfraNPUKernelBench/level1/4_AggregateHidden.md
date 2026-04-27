@@ -1,15 +1,38 @@
 ## 功能说明
 
-- 算子功能：对hidden层的token之间进行一维分组卷积操作。
+对hidden层的token之间进行一维分组卷积操作。
 
-- 计算公式：
-  假设输入input和输出output的shape是[S, B, H]，卷积权重weight的shape是[W, H]，i和j分别表示S和B轴的索引，那么输出将被表示为：
+## 计算公式
 
-  $$
-  output[i,j] = mask[j,i] * \sum_{k=0}^{W-1} input[i-k,j] * weight[W-1-k]
-  $$
+假设输入input和输出output的shape是[S, B, H]，卷积权重weight的shape是[W, H]，i和j分别表示S和B轴的索引，那么输出将被表示为：
 
-  其中，无效位置的padding为0填充；当前W仅支持3。
+$$
+output[i,j] = mask[j,i] * \sum_{k=0}^{W-1} input[i-k,j] * weight[W-1-k]
+$$
+
+其中，无效位置的padding为0填充；当前W仅支持3。
+
+## 参数说明
+
+| 参数名 | 输入/输出 | 描述 | 数据类型 | shape |
+|---|---|---|---|---|
+| input | 输入 | 卷积输入，不支持非连续 | bfloat16、float16 | (S, B, H) |
+| weight | 输入 | 卷积权重，不支持非连续，W目前只支持3，数据类型需与input一致 | bfloat16、float16 | (W, H) |
+| mask | 可选输入 | 卷积操作的输出掩码，不指定可传入None表示无掩码操作 | bool | (B, S) |
+| output | 输出 | 分组卷积结果，shape和数据类型与input一致 | 同input | (S, B, H) |
+
+维度含义：B（Batch Size）、S（Sequence Length）、H（Head Size）、W（Window Size）。
+
+## 约束说明
+```
+- 该接口不支持图模式。
+- input、weight和output的数据类型必须一致。
+- 输入输出的shape数据范围约束：
+  - B（Batchsize）：取值范围 1~8
+  - S（SeqLength）：取值范围 1~32K
+  - H（hiddenSize）：取值范围 192*2 ~ 192*128
+  - W：当前只支持3
+```
 
 ```python
 class Model(nn.Module):

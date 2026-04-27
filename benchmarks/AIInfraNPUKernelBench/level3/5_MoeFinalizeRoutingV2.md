@@ -11,6 +11,26 @@
   out(i,j)=x1_{i,j}+x2Optional_{i,j}+\sum_{k=0}^{K}(scales_{i,k}*(expandedX_{expandedRowIdx_{i+k*num_rows},j}+bias_{expertid,j}))
   $$
 
+## 参数说明
+
+| 参数名 | 输入/输出 | 描述 | 数据类型 | shape |
+|---|---|---|---|---|
+| expanded_x | 输入 | MoE的FFN输出 | FLOAT16、BFLOAT16、FLOAT32 | ND |
+| expanded_row_idx | 输入 | 行索引映射关系 | INT32 | ND |
+| x1 | 可选输入 | 残差项x1 | FLOAT16、BFLOAT16、FLOAT32 | ND |
+| x2 | 可选输入 | 残差项x2 | FLOAT16、BFLOAT16、FLOAT32 | ND |
+| bias | 可选输入 | 专家偏置 | FLOAT16、BFLOAT16、FLOAT32 | ND |
+| scales | 可选输入 | routing权重 | FLOAT16、BFLOAT16、FLOAT32 | ND |
+| expert_idx | 可选输入 | 专家索引 | INT32 | ND |
+| drop_pad_mode | 属性 | 是否支持丢弃模式，expandedRowIdx的排列方式 | INT64 | - |
+| out | 输出 | 合并后的输出 | FLOAT16、BFLOAT16、FLOAT32 | ND |
+
+- Kirin X90/Kirin 9030：不支持BFLOAT16。
+
+## 约束说明
+
+无。
+
 ```python
 class Model(nn.Module):
     """MoE finalize routing V2: merge MoE FFN output results."""

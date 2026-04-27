@@ -1,13 +1,13 @@
 ## 功能说明
 
-- 接口功能：输入qkv融合张量，通过SplitVD拆分q、k、v张量，执行RmsNorm、ApplyRotaryPosEmb、Quant、Scatter融合操作，输出qOut、kCache、vCache、qBeforeQuant(可选)、kBeforeQuant(可选)、vBeforeQuant(可选)。
+- 接口功能：输入qkv融合张量，通过SplitVD拆分q、k、v张量，执行RmsNorm、ApplyRotaryPosEmb、Quant、Scatter融合操作，输出q_out、k_cache、v_cache、q_out_before_quant(可选)、k_out_before_quant(可选)、v_out_before_quant(可选)。
 - 本接口目前支持的场景如下表：
 
   |场景类型|情况概要|
   |:---|:---|
-  |<ul><li>cacheMode为PA_NZ</li><li>q无量化</li><li>k和v支持无量化、对称量化和非对称量化</li><li>qBeforeQuant/kBeforeQuant/vBeforeQuant不输出</li></ul>|qkv Shape为[$B_{qkv}$ * $S_{qkv}$, $N_{qkv}$ * $D_{qkv}$]，q、k、v具有完全相同的D维度。主要计算过程与输出对应关系：<br><ul><li>qkv 经过SplitVD->q、k、v</li><li>q经过RmsNorm、RoPE->qOut</li><li>k经过RmsNorm、RoPE、Quant(可选)、Scatter->kCache</li><li>v经过Quant(可选)、Scatter->vCache</li></ul>|
+  |<ul><li>cache_mode为PA_NZ</li><li>q无量化</li><li>k和v支持无量化、对称量化和非对称量化</li><li>q_out_before_quant/k_out_before_quant/v_out_before_quant不输出</li></ul>|qkv Shape为[$B_{qkv}$ * $S_{qkv}$, $N_{qkv}$ * $D_{qkv}$]，q、k、v具有完全相同的D维度。主要计算过程与输出对应关系：<br><ul><li>qkv 经过SplitVD->q、k、v</li><li>q经过RmsNorm、RoPE->q_out</li><li>k经过RmsNorm、RoPE、Quant(可选)、Scatter->k_cache</li><li>v经过Quant(可选)、Scatter->v_cache</li></ul>|
 
-- 计算公式：
+## 计算公式
 
   (1) SplitVD:
 
@@ -91,6 +91,43 @@
   kQuant = kRoPE / kScale + kOffset \\
   vQuant = v / vScale + vOffset
   $$
+
+## 参数说明
+
+| 参数名 | 输入/输出 | 描述 | 数据类型 | shape |
+|---|---|---|---|---|
+| qkv | 输入 | 用于切分出q、k、v的输入数据 | FLOAT16、BFLOAT16 | [B_qkv * S_qkv, N_qkv * D_qkv] |
+| q_gamma | 输入 | q的rms_norm缩放参数 | FLOAT16、BFLOAT16 | [D_qkv] |
+| k_gamma | 输入 | k的rms_norm缩放参数 | FLOAT16、BFLOAT16 | [D_qkv] |
+| cos | 输入 | rope计算的余弦变换输入 | FLOAT16、BFLOAT16 | [B_qkv * S_qkv, 1 * D_rope]，D_rope=D_qkv |
+| sin | 输入 | rope计算的正弦变换输入 | FLOAT16、BFLOAT16 | 同cos |
+| index | 输入 | 指定写入cache的具体索引位置 | INT64 | [B_qkv * S_qkv] |
+| q_out | 输入/输出 | 提前申请的cache，输入输出同地址复用 | FLOAT16、BFLOAT16 | [B_qkv * S_qkv, N_q * D_qkv] |
+| k_cache | 输入/输出 | 提前申请的cache，不量化时同qkv dtype，量化时INT8 | FLOAT16、BFLOAT16、INT8 | 不量化：[BlockNum, N_k*D_qkv//16, BlockSize, 16]；量化：[BlockNum, N_k*D_qkv//32, BlockSize, 32] |
+| v_cache | 输入/输出 | 提前申请的cache，不量化时同qkv dtype，量化时INT8 | FLOAT16、BFLOAT16、INT8 | 不量化：[BlockNum, N_v*D_qkv//16, BlockSize, 16]；量化：[BlockNum, N_v*D_qkv//32, BlockSize, 32] |
+| k_scale | 可选输入 | k的量化缩放因子（k_cache为INT8时需要） | FLOAT32 | [N_k, D_qkv] |
+| v_scale | 可选输入 | v的量化缩放因子（v_cache为INT8时需要） | FLOAT32 | [N_v, D_qkv] |
+| k_offset | 可选输入 | k的非对称量化偏移量 | FLOAT32 | [N_k, D_qkv] |
+| v_offset | 可选输入 | v的非对称量化偏移量 | FLOAT32 | [N_v, D_qkv] |
+| q_out_before_quant | 可选输出 | 即将写入q_out中的数据 | FLOAT16、BFLOAT16 | 同q_out |
+| k_out_before_quant | 可选输出 | 未经量化和Scatter前的k中间计算结果 | FLOAT16、BFLOAT16 | ND |
+| v_out_before_quant | 可选输出 | 未经量化和Scatter前的v中间计算结果 | FLOAT16、BFLOAT16 | ND |
+| qkv_size | 属性 | 按[B_qkv, S_qkv, N_qkv, D_qkv]顺序传入 | INT64 | - |
+| head_nums | 属性 | 按[N_q, N_k, N_v]顺序传入 | INT64 | - |
+| epsilon | 可选属性 | RmsNorm计算防除0，默认1e-6 | FLOAT32 | - |
+| cache_mode | 可选属性 | cache格式选择标记，目前只支持PA_NZ，默认PA_NZ | STRING | - |
+| is_output_qkv | 可选属性 | 是否输出未经量化和Scatter前的原始值，默认false | BOOL | - |
+
+## 约束说明
+
+- 输入shape限制：
+  - D_qkv目前仅支持128。D_q=D_k=D_v=D_qkv，且需满足（D_qkv*qkv数据类型占字节数）可以被32整除。
+  - 根据rope规则，D_k和D_q为偶数。PA_NZ场景下，D_k、D_q需32B对齐；BlockSize需32B对齐。
+  - 32B对齐的具体值由cache数据类型决定：若cache的dtype为int8，则BlockSize%32=0；若为float16，则BlockSize%16=0；若k_cache与v_cache的dtype不一致，BlockSize需同时满足两者。
+  - BlockNum >= Ceil(S_qkv / BlockSize) * B_qkv。
+- 其他限制：
+  - index的value值范围为[-1, BlockNum * BlockSize)，值不可重复。index为-1时代表跳过更新。
+  - k_scale、v_scale表示对称量化的缩放因子，若传参则值不能为0。
 
 ```python
 class Model(nn.Module):

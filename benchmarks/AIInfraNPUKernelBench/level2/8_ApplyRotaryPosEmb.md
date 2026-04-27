@@ -1,39 +1,64 @@
 ## 功能说明
 
-- 接口功能：推理网络为了提升性能，将query和key两路算子融合成一路。执行旋转位置编码计算，计算结果执行原地更新。
-- 计算公式：
+执行旋转位置编码计算，推理网络为了提升性能，将query和key两路算子融合成一路。计算结果执行原地更新。
 
-  $$
-  query\_q1 = query[..., : query.shape[-1] // 2]
-  $$
-  
-  $$
-  query\_q2 = query[..., query.shape[-1] // 2 :]
-  $$
-  
-  $$
-  query\_rotate = torch.cat((-query\_q2, query\_q1), dim=-1)
-  $$
-  
-  $$
-  key\_k1 = key[..., : key.shape[-1] // 2]
-  $$
-  
-  $$
-  key\_k2 = key[..., key.shape[-1] // 2 :]
-  $$
-  
-  $$
-  key\_rotate = torch.cat((-key\_k2, key\_k1), dim=-1)
-  $$
-  
-  $$
-  q\_embed = (query * cos) + query\_rotate * sin
-  $$
-  
-  $$
-  k\_embed = (key * cos) + key\_rotate * sin
-  $$
+## 计算公式
+
+（1）rotaryMode为"half"：
+
+$$
+query\_q1 = query[..., : query.shape[-1] // 2], \quad query\_q2 = query[..., query.shape[-1] // 2 :]
+$$
+
+$$
+query\_rotate = torch.cat((-query\_q2, query\_q1), dim=-1)
+$$
+
+$$
+key\_k1 = key[..., : key.shape[-1] // 2], \quad key\_k2 = key[..., key.shape[-1] // 2 :]
+$$
+
+$$
+key\_rotate = torch.cat((-key\_k2, key\_k1), dim=-1)
+$$
+
+$$
+q\_embed = (query * cos) + query\_rotate * sin
+$$
+
+$$
+k\_embed = (key * cos) + key\_rotate * sin
+$$
+
+（2）rotaryMode为"quarter"：将query/key分为4等分，旋转方式类似half但作用于1/4和3/4区间。
+
+（3）rotaryMode为"interleave"：对query/key的奇偶位交叉旋转。
+
+## 参数说明
+
+| 参数名 | 输入/输出 | 描述 | 数据类型 | shape |
+|---|---|---|---|---|
+| query | 输入/输出 | 输入query张量和输出q_embed，4维张量 | BFLOAT16、FLOAT16、FLOAT32 | 4维，layout相关 |
+| key | 输入/输出 | 输入key张量和输出k_embed，4维张量 | BFLOAT16、FLOAT16、FLOAT32 | 4维，layout相关 |
+| cos | 输入 | 位置编码cos张量，4维 | BFLOAT16、FLOAT16、FLOAT32 | 4维，layout相关 |
+| sin | 输入 | 位置编码sin张量，4维 | BFLOAT16、FLOAT16、FLOAT32 | 4维，layout相关 |
+| layout | 属性 | 输入张量的布局格式 | STRING | "BSND"、"SBND"、"BNSD"、"TND" |
+| rotary_mode | 属性 | 旋转模式 | STRING | "half"、"interleave"、"quarter" |
+
+## 约束说明
+
+- Atlas A2/A3 训练/推理系列：
+  - 输入张量query、key、cos、sin支持4维和3维的shape，layout支持1-BSND和4-TND。
+  - 4个输入shape的前2维（BSND格式）或第一维（TND格式）和最后一维必须相等。
+  - cos和sin的shape倒数第2维（N维）必须等于1。
+  - 输入shape最后一维必须等于128或64。
+  - 输入张量query、key、cos、sin的dtype必须相同。
+  - rotary_mode只支持"half"。
+  - 不支持空tensor场景。
+- Ascend 950PR/950DT：
+  - query与key除N维度外其他维度必须相同；cos与sin shape必须相同。
+  - rotary_mode为"half"/"interleave"时最后一维必须被2整除；"quarter"时必须被4整除。
+  - D维度小于等于1024。
 
 ```python
 class Model(nn.Module):

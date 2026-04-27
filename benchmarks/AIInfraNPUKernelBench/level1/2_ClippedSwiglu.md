@@ -1,71 +1,87 @@
-# L1/2 ClippedSwiglu
-
-> 摘自 `/home/Code/benchMD/ops-nn/activation/clipped_swiglu/README.md` 与 `docs/aclnnClippedSwiglu.md`。
-> Golden 接口：`torch_npu.npu_clipped_swiglu`（CANN 8.5.0 已打包，eager direct）。
-
 ## 功能说明
 
-带截断的 Swish 门控线性单元激活函数（变体 SwiGLU）。相较标准 SwiGLU，新增 `group_index`、`alpha`、`limit`、`bias`、`interleaved` 五个参数，用于支持 GPT-OSS 模型变体与 MoE 分组场景。
+带截断的Swish门控线性单元激活函数，实现x的SwiGlu计算。本算子相较于SwiGlu算子，新增了部分输入参数：groupIndex、alpha、limit、bias、interleaved，用于支持GPT-OSS模型使用的变体SwiGlu以及MoE模型使用的分组场景。
 
-## 计算流程
+## 计算公式
 
-输入 `x` 维度 `[a,b,c,d,e,f,g,...]`：
+对给定的输入张量 x，其维度为[a,b,c,d,e,f,g…]，算子ClippedSwiglu对其进行以下计算：
 
-1. **合轴**：基于 `dim` 把 x 合并成 `[pre, cut, after]`，再把 `cut` 与 `after` 合并为 `[pre, cut]`。
-2. **分组过滤**（可选）：当传入 `group_index` 时，`sum = Σ group_index`，`x = x[:sum, :]`。
-3. **切分**：
-   - `interleaved=True`（奇偶切分）：`A = x[:, ::2]`，`B = x[:, 1::2]`
-   - `interleaved=False`（前后切分）：`h = x.shape[1] // 2`，`A = x[:, :h]`，`B = x[:, h:]`
-4. **变体 SwiGLU**：
-   - `A = clamp(A, max=limit)`
-   - `B = clamp(B, -limit, limit)`
-   - `y_glu = A * sigmoid(alpha * A)`
-   - `y = y_glu * (B + bias)`
-5. **重塑**：恢复到合轴前的维度数量，`dim` 轴大小减半，其余维度保持。
+1. 将x基于输入参数dim进行合轴，合轴后维度为[pre,cut,after]。其中cut轴为合轴之后需要切分为两个张量的轴，切分方式分为前后切分或者奇偶切分；pre，after可以等于1。例如当dim为3，合轴后x的维度为[a*b*c,d,e*f*g*…]。此外，由于after轴的元素为连续存放，且计算操作为逐元素的，因此将cut轴与after轴合并，得到x的维度为[pre,cut]。
 
-## 参数表
+2. 根据输入参数 group_index, 对 x 的pre轴进行过滤处理：
 
-| 参数 | I/O | 描述 | dtype | format |
+$$
+sum = \text{Sum}(group\_index)
+$$
+
+$$
+x = x[ : sum, : ]
+$$
+
+其中sum表示group_index的所有元素之和。当不输入 group_index 时，跳过该步骤。
+
+3. 根据输入参数 interleaved，对 x 进行切分：
+
+当 interleaved 为 true 时，表示奇偶切分：
+
+$$
+A = x[ : , : : 2]
+$$
+
+$$
+B = x[ : , 1 : : 2]
+$$
+
+当 interleaved 为 false 时，表示前后切分：
+
+$$
+h = x.shape[1] // 2
+$$
+
+$$
+A = x[ : , : h]
+$$
+
+$$
+B = x[ : , h : ]
+$$
+
+4. 根据输入参数 alpha、limit、bias 进行变体SwiGlu计算：
+
+$$
+A = A.clamp(min=None, max=limit)
+$$
+
+$$
+B = B.clamp(min=-limit, max=limit)
+$$
+
+$$
+y\_glu = A * sigmoid(alpha * A)
+$$
+
+$$
+y = y\_glu * (B + bias)
+$$
+
+5. 重塑输出张量y的维度数量与合轴前的x的维度数量一致，dim轴上的大小为x的一半，其他维度与x相同。
+
+## 参数说明
+
+| 参数名 | 输入/输出 | 描述 | 数据类型 | shape |
 |---|---|---|---|---|
-| `x` | 输入 | 主输入，`dim` 对应轴必须为偶数 | FLOAT / FLOAT16 / BFLOAT16 | ND |
-| `group_index` | 可选输入 | 分组过滤索引，1 维 | INT64 | - |
-| `dim` | 可选属性 | 合轴/切分维度，范围 `[-x.dim(), x.dim()-1]`，默认 `-1` | INT64 | - |
-| `alpha` | 可选属性 | sigmoid 缩放因子，默认 `1.702` | FLOAT | - |
-| `limit` | 可选属性 | clamp 门限，默认 `7.0` | FLOAT | - |
-| `bias` | 可选属性 | 输出加性偏置，默认 `1.0` | FLOAT | - |
-| `interleaved` | 可选属性 | true=奇偶切分，false=前后切分，默认 `True` | BOOL | - |
-| `y` | 输出 | `dim` 轴减半，其余与 `x` 一致 | 同 `x` | ND |
+| x | 输入 | 主输入，dim对应轴必须为偶数，维度必须大于0 | FLOAT32、FLOAT16、BFLOAT16 | 任意，dim轴为偶数 |
+| group_index | 可选输入 | 分组过滤索引，1维 | INT64 | (G,) |
+| dim | 可选属性 | 合轴/切分维度，范围[-x.dim(), x.dim()-1]，默认-1 | INT64 | 标量 |
+| alpha | 可选属性 | sigmoid缩放因子，默认1.702 | FLOAT | 标量 |
+| limit | 可选属性 | clamp门限值，默认7.0 | FLOAT | 标量 |
+| bias | 可选属性 | 偏差参数，默认1.0 | FLOAT | 标量 |
+| interleaved | 可选属性 | true=奇偶切分，false=前后切分，默认true | BOOL | 标量 |
+| y | 输出 | dim轴大小为x的一半，其他维度与x一致 | 同x | 同x，dim轴减半 |
 
-## torch_npu schema（运行时确认）
+## 约束说明
 
-```
-npu_clipped_swiglu(
-    Tensor x, *,
-    Tensor? group_index=None,
-    int dim=-1, float alpha=1.702, float limit=7., float bias=1.,
-    bool interleaved=True
-) -> Tensor
-```
-
-## 产品支持
-
-| 产品 | 支持 |
-|---|---|
-| Atlas A3 训练/推理 | √ |
-| Atlas A2 训练/推理 | √ |
-| 其他 | × |
-
-## 约束
-
-无。
-
-## 参考调用
-
-```cpp
-// aclnn 层：见源仓 examples/test_aclnn_clipped_swiglu.cpp
-aclnnClippedSwigluGetWorkspaceSize(...)
-aclnnClippedSwiglu(...)
-```
+无
 
 ```python
 class Model(nn.Module):

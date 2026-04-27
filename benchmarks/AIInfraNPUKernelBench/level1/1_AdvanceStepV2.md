@@ -1,34 +1,44 @@
 ## 功能说明
 
-- 接口功能：
+vLLM是一个高性能的LLM推理和服务框架，专注于优化大规模语言模型的推理效率。它的核心特点包括PageAttention和高效内存管理。advance_step算子的主要作用是推进推理步骤，即在每个生成步骤中更新模型的状态并生成新的inputTokens、inputPositions、seqLens和slotMapping，为vLLM的推理提升效率。
 
-  vLLM是一个高性能的LLM推理和服务框架，专注于优化大规模语言模型的推理效率。它的核心特点包括PageAttention和高效内存管理。advance_step算子的主要作用是推进推理步骤，即在每个生成步骤中更新模型的状态并生成新的inputTokens、inputPositions、seqLens和slotMapping，为vLLM的推理提升效率。
+## 计算公式
 
-- 计算公式：
+$$
+blockTablesStride = blockTables.stride(0)
+$$
 
-  $$
-  blockIdx是当前代码被执行的核的index。
-  $$
+$$
+inputTokens[blockIdx] = sampledTokenIds[blockIdx]
+$$
 
-  $$
-  blockTablesStride = blockTables.stride(0)
-  $$
+$$
+inputPositions[blockIdx] = seqLens[blockIdx]
+$$
 
-  $$
-  inputTokens[blockIdx] = sampledTokenIds[blockIdx]
-  $$
+$$
+seqLens[blockIdx] = seqLens[blockIdx] + 1
+$$
 
-  $$
-  inputPositions[blockIdx] = seqLens[blockIdx]
-  $$
+$$
+slotMapping[blockIdx] = (blockTables[blockIdx] + blockTablesStride * blockIdx) * blockSize + (seqLens[blockIdx] \% blockSize)
+$$
 
-  $$
-  seqLens[blockIdx] = seqLens[blockIdx] + 1
-  $$
+## 参数说明
 
-  $$
-  slotMapping[blockIdx] = (blockTables[blockIdx] + blockTablesStride * blockIdx) * blockSize + (seqLens[blockIdx] \% blockSize)
-  $$
+| 参数名 | 输入/输出 | 描述 | 数据类型 | shape |
+|---|---|---|---|---|
+| input_tokens | 输入/输出 | 用于更新vLLM模型中的token值。不支持空Tensor，取值为正整数。 | INT64 | (numSeqs, 1+specNum) |
+| sampled_token_ids | 输入 | 储存tokenID。不支持空Tensor，取值为正整数。 | INT64 | (numSeqs, 1+specNum) |
+| input_positions | 输入/输出 | 记录token的index。不支持空Tensor，取值为正整数。 | INT64 | (numSeqs,) |
+| seq_lens | 输入/输出 | 记录不同blockIdx下seq的长度。不支持空Tensor，取值为正整数。 | INT64 | (numSeqs,) |
+| slot_mapping | 输入/输出 | 将token在序列中的位置映射到物理位置。不支持空Tensor，取值为正整数。 | INT64 | (numSeqs,) |
+| block_tables | 输入 | 记录不同blockIdx下block的大小。不支持空Tensor，第二维大于max(seqLens)/blockSize。 | INT64 | (numSeqs, maxBlocks) |
+| spec_token | 输入 | 记录当前投机模型的token的index。不支持空Tensor，取值为正整数。 | INT64 | (numSeqs, specNum) |
+| accepted_num | 输入 | 记录每个request接受的投机数量。不支持空Tensor，取值为正整数。 | INT64 | (numSeqs,) |
+| num_seqs | 输入 | 输入的seq数量，与seqLens长度一致。numSeqs >= numQueries。 | INT64 | 标量 |
+| num_queries | 输入 | 输入的Query数量，与sampledTokenIds第一维长度一致。 | INT64 | 标量 |
+| block_size | 输入 | 每个block的大小。取值为正整数。 | INT64 | 标量 |
 
 ```python
 class Model(nn.Module):
